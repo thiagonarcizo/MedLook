@@ -1,8 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:med/pages/intro.dart';
+import '/pages/info.dart' as info;
+import '../models/person.dart';
+import 'info.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
+
+_write(String text, String fileName) async {
+  final Directory directory = await getApplicationDocumentsDirectory();
+  final File file = File('${directory.path}/$fileName.txt');
+  await file.writeAsString(text);
+}
 
 class Welcome extends StatefulWidget {
-  Welcome({Key? key}) : super(key: key);
+  const Welcome({Key? key}) : super(key: key);
 
   @override
   State<Welcome> createState() => _WelcomeState();
@@ -10,6 +21,7 @@ class Welcome extends StatefulWidget {
 
 class _WelcomeState extends State<Welcome> {
   final TextEditingController nome = TextEditingController();
+  List<Person> infos = [];
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +37,10 @@ class _WelcomeState extends State<Welcome> {
               Column(
                 children: [
                   Text(
-                    'Olá, ' + nome.text,
-                    style: TextStyle(fontSize: 46),
+                    'Olá, ${nome.text}',
+                    style: const TextStyle(fontSize: 46),
                   ),
-                  SizedBox(height: 32),
+                  const SizedBox(height: 32),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 50),
                     child: TextField(
@@ -74,16 +86,26 @@ class _WelcomeState extends State<Welcome> {
   }
 
   void confirmar() {
+    _write(nome.text, 'Nome');
     setState(() {
       String name = nome.text;
       print(name);
+      Future.delayed(const Duration(seconds: 2), () {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => Info()));
+      });
     });
   }
 
   void submit(String name) {
+    _write(nome.text, 'nome');
     setState(() {
       String name = nome.text;
       print(name);
+      Future.delayed(const Duration(seconds: 2), () {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => Info()));
+      });
     });
   }
 }
