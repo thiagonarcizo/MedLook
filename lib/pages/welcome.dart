@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:med/pages/intro.dart';
-import '/pages/info.dart' as info;
 import '../models/person.dart';
-import 'info.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 
@@ -11,6 +8,9 @@ _write(String text, String fileName) async {
   final File file = File('${directory.path}/$fileName.txt');
   await file.writeAsString(text);
 }
+
+List<Person> infos = [];
+final Person person = Person();
 
 class Welcome extends StatefulWidget {
   const Welcome({Key? key}) : super(key: key);
@@ -87,10 +87,11 @@ class _WelcomeState extends State<Welcome> {
 
   void confirmar() {
     _write(nome.text, 'Nome');
+    person.nome = nome.text;
     setState(() {
       String name = nome.text;
       print(name);
-      Future.delayed(const Duration(seconds: 2), () {
+      Future.delayed(const Duration(seconds: 1), () {
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => Info()));
       });
@@ -99,13 +100,138 @@ class _WelcomeState extends State<Welcome> {
 
   void submit(String name) {
     _write(nome.text, 'nome');
+    person.nome = nome.text;
     setState(() {
       String name = nome.text;
       print(name);
-      Future.delayed(const Duration(seconds: 2), () {
+      Future.delayed(const Duration(seconds: 1), () {
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => Info()));
       });
     });
+  }
+}
+
+class Info extends StatelessWidget {
+  Info({Key? key}) : super(key: key);
+
+  final TextEditingController idade = TextEditingController();
+  final TextEditingController altura = TextEditingController();
+  final TextEditingController peso = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Column(
+          children: [
+            Text(
+                'Muito bem, ${person.nome}, precisamos de mais informações suas...'),
+            SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: TextField(
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    borderSide: BorderSide(
+                      color: Colors.black,
+                      width: 1,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    borderSide: BorderSide(
+                      color: Colors.black,
+                      width: 1,
+                    ),
+                  ),
+                  labelText: 'Quantos anos você tem, ${person.nome}?',
+                ),
+                controller: idade,
+              ),
+            ),
+            SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: TextField(
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    borderSide: BorderSide(
+                      color: Colors.black,
+                      width: 1,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    borderSide: BorderSide(
+                      color: Colors.black,
+                      width: 1,
+                    ),
+                  ),
+                  labelText:
+                      'Qual a sua altura, ${person.nome}? (favor responder em centímetros - p.e.: 170)',
+                ),
+                controller: altura,
+              ),
+            ),
+            SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: TextField(
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    borderSide: BorderSide(
+                      color: Colors.black,
+                      width: 1,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    borderSide: BorderSide(
+                      color: Colors.black,
+                      width: 1,
+                    ),
+                  ),
+                  labelText: '${person.nome}, qual o seu peso?',
+                ),
+                controller: peso,
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                if (idade.text != '' &&
+                    idade.text.length <= 2 &&
+                    altura.text != '' &&
+                    altura.text.length == 3 &&
+                    peso.text != '' &&
+                    peso.text.length <= 3) {
+                  person.idade = int.parse(idade.text);
+                  person.altura = int.parse(altura.text);
+                  person.peso = int.parse(peso.text);
+                  Person user = Person(
+                    nome: person.nome,
+                    idade: person.idade,
+                    altura: person.altura,
+                    peso: person.peso,
+                  );
+                  infos.add(user);
+                  idade.clear();
+                  altura.clear();
+                  peso.clear();
+                  print(infos);
+                } else {
+                  print('Preencha os campos corretamente!');
+                }
+              },
+              child: const Text('Prosseguir'),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
