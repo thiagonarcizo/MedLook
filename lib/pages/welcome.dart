@@ -126,11 +126,13 @@ class Info extends StatelessWidget {
       body: Center(
         child: Column(
           children: [
+            SizedBox(height: 32),
             Text(
-                'Muito bem, ${person.nome}, precisamos de mais informações suas...'),
-            SizedBox(height: 16),
+                'Muito bem, ${person.nome}, precisamos de mais informações suas...',
+                style: TextStyle(fontSize: 24)),
+            const SizedBox(height: 40),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: TextField(
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
@@ -152,9 +154,9 @@ class Info extends StatelessWidget {
                 controller: idade,
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 32),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: TextField(
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
@@ -171,15 +173,15 @@ class Info extends StatelessWidget {
                       width: 1,
                     ),
                   ),
-                  labelText:
-                      'Qual a sua altura, ${person.nome}? (favor responder em centímetros - p.e.: 170)',
+                  labelText: 'Qual a sua altura, ${person.nome}?',
+                  hintText: 'Exemplo: 180 - Responder em centímetros',
                 ),
                 controller: altura,
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 32),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: TextField(
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
@@ -201,6 +203,7 @@ class Info extends StatelessWidget {
                 controller: peso,
               ),
             ),
+            const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
                 if (idade.text != '' &&
@@ -211,7 +214,7 @@ class Info extends StatelessWidget {
                     peso.text.length <= 3) {
                   person.idade = int.parse(idade.text);
                   person.altura = int.parse(altura.text);
-                  person.peso = int.parse(peso.text);
+                  person.peso = double.parse(peso.text);
                   Person user = Person(
                     nome: person.nome,
                     idade: person.idade,

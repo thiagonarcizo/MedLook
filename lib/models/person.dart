@@ -6,5 +6,5 @@ class Person {
   String? nome;
   int? idade;
   int? altura;
-  int? peso;
+  double? peso;
 }
