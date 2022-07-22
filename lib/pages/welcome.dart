@@ -128,125 +128,136 @@ class Info extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const SizedBox(height: 32),
-            Text(
-                'Muito bem, ${person.nome}, precisamos de mais informações suas...',
-                style: const TextStyle(fontSize: 24)),
-            const SizedBox(height: 40),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: TextField(
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: const BorderSide(
-                      color: Colors.black,
-                      width: 1,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: const BorderSide(
-                      color: Colors.black,
-                      width: 1,
-                    ),
-                  ),
-                  labelText: 'Quantos anos você tem?',
+        child: SafeArea(
+          child: ListView(padding: EdgeInsets.zero, children: [
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(height: 32),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Text(
+                      'Muito bem, ${person.nome}, precisamos de mais informações suas...',
+                      style: const TextStyle(fontSize: 24)),
                 ),
-                controller: idade,
-                keyboardType: TextInputType.number,
-              ),
-            ),
-            const SizedBox(height: 32),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: TextField(
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: const BorderSide(
-                      color: Colors.black,
-                      width: 1,
+                const SizedBox(height: 40),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: const BorderSide(
+                          color: Colors.black,
+                          width: 1,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: const BorderSide(
+                          color: Colors.black,
+                          width: 1,
+                        ),
+                      ),
+                      labelText: 'Quantos anos você tem?',
                     ),
+                    controller: idade,
+                    keyboardType: TextInputType.number,
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: const BorderSide(
-                      color: Colors.black,
-                      width: 1,
-                    ),
-                  ),
-                  labelText: 'Qual a sua altura?',
-                  hintText: 'Exemplo: 180 - Responder em centímetros',
                 ),
-                controller: altura,
-                keyboardType: TextInputType.number,
-              ),
-            ),
-            const SizedBox(height: 32),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: TextField(
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: const BorderSide(
-                      color: Colors.black,
-                      width: 1,
+                const SizedBox(height: 32),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: const BorderSide(
+                          color: Colors.black,
+                          width: 1,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: const BorderSide(
+                          color: Colors.black,
+                          width: 1,
+                        ),
+                      ),
+                      labelText: 'Qual a sua altura?',
+                      hintText: 'Exemplo: 180 - Responder em centímetros',
                     ),
+                    controller: altura,
+                    keyboardType: TextInputType.number,
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: const BorderSide(
-                      color: Colors.black,
-                      width: 1,
-                    ),
-                  ),
-                  labelText: 'Qual o seu peso?',
-                  hintText:
-                      'Exemplo: 80.5 - usar ponto para separar casas decimais',
                 ),
-                controller: peso,
-                keyboardType: TextInputType.number,
-              ),
+                const SizedBox(height: 32),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: const BorderSide(
+                          color: Colors.black,
+                          width: 1,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: const BorderSide(
+                          color: Colors.black,
+                          width: 1,
+                        ),
+                      ),
+                      labelText: 'Qual o seu peso?',
+                      hintText:
+                          'Exemplo: 80.5 - usar ponto para separar casas decimais',
+                    ),
+                    controller: peso,
+                    keyboardType: TextInputType.number,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                    onPressed: () async {
+                      if (idade.text != '' &&
+                          idade.text.length <= 2 &&
+                          altura.text != '' &&
+                          altura.text.length == 3 &&
+                          peso.text != '' &&
+                          peso.text.length <= 5) {
+                        person.idade = int.parse(idade.text);
+                        person.altura = int.parse(altura.text);
+                        person.peso = double.parse(peso.text);
+                        Person user = Person(
+                          nome: person.nome,
+                          idade: person.idade,
+                          altura: person.altura,
+                          peso: person.peso,
+                        );
+                        infos.add(user);
+                        idade.clear();
+                        altura.clear();
+                        peso.clear();
+                        sharedPref.save("user", person);
+                        final prefs = await SharedPreferences.getInstance();
+                        prefs.setBool('showWelcome', true);
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) => Home()));
+                      } else {
+                        _showDialog(context);
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.black,
+                      onPrimary: Colors.white,
+                      fixedSize: const Size(100, 45),
+                    ),
+                    child: const Text('Prosseguir')),
+              ],
             ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () async {
-                if (idade.text != '' &&
-                    idade.text.length <= 2 &&
-                    altura.text != '' &&
-                    altura.text.length == 3 &&
-                    peso.text != '' &&
-                    peso.text.length <= 5) {
-                  person.idade = int.parse(idade.text);
-                  person.altura = int.parse(altura.text);
-                  person.peso = double.parse(peso.text);
-                  Person user = Person(
-                    nome: person.nome,
-                    idade: person.idade,
-                    altura: person.altura,
-                    peso: person.peso,
-                  );
-                  infos.add(user);
-                  idade.clear();
-                  altura.clear();
-                  peso.clear();
-                  sharedPref.save("user", person);
-                  final prefs = await SharedPreferences.getInstance();
-                  prefs.setBool('showWelcome', true);
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) => Home()));
-                } else {
-                  _showDialog(context);
-                }
-              },
-              child: const Text('Prosseguir'),
-            ),
-          ],
+          ]),
         ),
       ),
     );
@@ -263,7 +274,10 @@ class Info extends StatelessWidget {
               "Verifique se todos os campos foram preenchidos corretamente."),
           actions: <Widget>[
             TextButton(
-              child: const Text("Fechar"),
+              child: const Text(
+                "Fechar",
+                style: TextStyle(color: Colors.black),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },

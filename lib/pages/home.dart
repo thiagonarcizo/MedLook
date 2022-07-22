@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:med/pages/profile.dart';
+import 'package:med/pages/welcome.dart';
 import '../repositories/data.dart';
 
 import '../models/person.dart';
+import 'credits.dart';
 
 class Home extends StatefulWidget {
   Home({Key? key}) : super(key: key);
@@ -37,22 +40,114 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      appBar: upMenu(),
+      drawer: SideMenu(),
       body: Center(
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Olá, ${personLoad.nome}',
-                style: const TextStyle(fontSize: 46, color: Colors.white)),
-            Text('Sua idade: ${personLoad.idade} anos',
-                style: const TextStyle(fontSize: 46, color: Colors.white)),
-            Text('Sua altura: ${personLoad.altura} cm',
-                style: const TextStyle(fontSize: 46, color: Colors.white)),
-            Text('Seu peso: ${personLoad.peso} kg',
-                style: const TextStyle(fontSize: 46, color: Colors.white)),
+            Text(
+              'Tela de início',
+              style: TextStyle(fontSize: 30),
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.black,
+        onPressed: () {
+          print('Botão adicionar pressionado');
+        },
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+}
+
+class SideMenu extends StatefulWidget {
+  SideMenu({Key? key}) : super(key: key);
+
+  @override
+  State<SideMenu> createState() => _SideMenuState();
+}
+
+class _SideMenuState extends State<SideMenu> {
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(16),
+              child: Text(
+                'MedLook',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.home),
+              title: const Text('Início'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Home()),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.person),
+              title: const Text('Perfil'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: ((context) => Profile())));
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.info),
+              title: const Text('Créditos'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: ((context) => const Credits())));
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.exit_to_app),
+              title: const Text('Resetar'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const Welcome()));
+              },
+            ),
           ],
         ),
       ),
     );
   }
+}
+
+PreferredSizeWidget upMenu() {
+  return AppBar(
+    title: Text('Início'),
+    actions: [
+      Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16),
+        child: Row(
+          children: const [
+            Icon(Icons.search),
+            SizedBox(width: 12),
+            Icon(Icons.more_vert),
+          ],
+        ),
+      ),
+    ],
+    backgroundColor: Colors.black,
+  );
 }
