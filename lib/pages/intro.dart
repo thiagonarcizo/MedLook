@@ -52,8 +52,6 @@ class IntroScreenDefaultState extends State<IntroScreenDefault> {
 
   void onDonePress() async {
     // Do what you want
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setBool('showWelcome', true);
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => Welcome()));
     log("End of slides");

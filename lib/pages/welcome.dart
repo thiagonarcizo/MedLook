@@ -1,7 +1,11 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:med/pages/home.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/person.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
+import '../repositories/data.dart';
 
 _write(String text, String fileName) async {
   final Directory directory = await getApplicationDocumentsDirectory();
@@ -10,7 +14,7 @@ _write(String text, String fileName) async {
 }
 
 List<Person> infos = [];
-final Person person = Person();
+Person person = Person();
 
 class Welcome extends StatefulWidget {
   const Welcome({Key? key}) : super(key: key);
@@ -32,7 +36,6 @@ class _WelcomeState extends State<Welcome> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            // ignore: prefer_const_literals_to_create_immutables
             children: [
               Column(
                 children: [
@@ -47,14 +50,14 @@ class _WelcomeState extends State<Welcome> {
                       decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             color: Colors.black,
                             width: 1,
                           ),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             color: Colors.black,
                             width: 1,
                           ),
@@ -66,15 +69,15 @@ class _WelcomeState extends State<Welcome> {
                       maxLength: 25,
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   TextButton(
                     onPressed: confirmar,
                     style: TextButton.styleFrom(
                       backgroundColor: Colors.white,
-                      fixedSize: Size(100, 50),
+                      fixedSize: const Size(100, 50),
                       primary: Colors.black,
                     ),
-                    child: Text('Confirma'),
+                    child: const Text('Confirma'),
                   ),
                 ],
               ),
@@ -118,6 +121,7 @@ class Info extends StatelessWidget {
   final TextEditingController idade = TextEditingController();
   final TextEditingController altura = TextEditingController();
   final TextEditingController peso = TextEditingController();
+  SharedPref sharedPref = SharedPref();
 
   @override
   Widget build(BuildContext context) {
@@ -125,11 +129,12 @@ class Info extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Center(
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            SizedBox(height: 32),
+            const SizedBox(height: 32),
             Text(
                 'Muito bem, ${person.nome}, precisamos de mais informações suas...',
-                style: TextStyle(fontSize: 24)),
+                style: const TextStyle(fontSize: 24)),
             const SizedBox(height: 40),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -137,14 +142,14 @@ class Info extends StatelessWidget {
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                       color: Colors.black,
                       width: 1,
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                       color: Colors.black,
                       width: 1,
                     ),
@@ -152,6 +157,7 @@ class Info extends StatelessWidget {
                   labelText: 'Quantos anos você tem?',
                 ),
                 controller: idade,
+                keyboardType: TextInputType.number,
               ),
             ),
             const SizedBox(height: 32),
@@ -161,14 +167,14 @@ class Info extends StatelessWidget {
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                       color: Colors.black,
                       width: 1,
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                       color: Colors.black,
                       width: 1,
                     ),
@@ -177,6 +183,7 @@ class Info extends StatelessWidget {
                   hintText: 'Exemplo: 180 - Responder em centímetros',
                 ),
                 controller: altura,
+                keyboardType: TextInputType.number,
               ),
             ),
             const SizedBox(height: 32),
@@ -186,32 +193,35 @@ class Info extends StatelessWidget {
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                       color: Colors.black,
                       width: 1,
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                       color: Colors.black,
                       width: 1,
                     ),
                   ),
                   labelText: 'Qual o seu peso?',
+                  hintText:
+                      'Exemplo: 80.5 - usar ponto para separar casas decimais',
                 ),
                 controller: peso,
+                keyboardType: TextInputType.number,
               ),
             ),
             const SizedBox(height: 16),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 if (idade.text != '' &&
                     idade.text.length <= 2 &&
                     altura.text != '' &&
                     altura.text.length == 3 &&
                     peso.text != '' &&
-                    peso.text.length <= 3) {
+                    peso.text.length <= 5) {
                   person.idade = int.parse(idade.text);
                   person.altura = int.parse(altura.text);
                   person.peso = double.parse(peso.text);
@@ -225,9 +235,13 @@ class Info extends StatelessWidget {
                   idade.clear();
                   altura.clear();
                   peso.clear();
-                  print(infos);
+                  sharedPref.save("user", person);
+                  final prefs = await SharedPreferences.getInstance();
+                  prefs.setBool('showWelcome', true);
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) => Home()));
                 } else {
-                  print('Preencha os campos corretamente!');
+                  _showDialog(context);
                 }
               },
               child: const Text('Prosseguir'),
@@ -235,6 +249,28 @@ class Info extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  void _showDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: true,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Preencha todos os campos corretamente!"),
+          content: const Text(
+              "Verifique se todos os campos foram preenchidos corretamente."),
+          actions: <Widget>[
+            TextButton(
+              child: const Text("Fechar"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

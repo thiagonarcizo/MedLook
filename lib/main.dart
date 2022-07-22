@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:intro_slider/intro_slider.dart';
+import 'package:med/pages/home.dart';
 import 'package:med/pages/intro.dart';
-import 'package:med/pages/welcome.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
@@ -21,7 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'MedLook',
-      home: showWelcome ? Welcome() : IntroScreenDefault(),
+      home: showWelcome ? Home() : const IntroScreenDefault(),
       //home: IntroScreenDefault(),
       debugShowCheckedModeBanner: false,
     );
