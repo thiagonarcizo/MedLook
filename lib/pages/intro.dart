@@ -5,6 +5,7 @@ import 'package:med/pages/welcome.dart';
 import 'package:med/main.dart';
 import 'package:flutter/material.dart';
 import 'package:intro_slider/intro_slider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class IntroScreenDefault extends StatefulWidget {
   const IntroScreenDefault({Key? key}) : super(key: key);
@@ -26,7 +27,7 @@ class IntroScreenDefaultState extends State<IntroScreenDefault> {
         description:
             "Temos como objetivo facilitar a forma com que você gerencia os seus remédios.",
         pathImage: null,
-        backgroundColor: Color.fromARGB(255, 0, 0, 0),
+        backgroundColor: Color.fromARGB(255, 29, 29, 29),
       ),
     );
     slides.add(
@@ -49,8 +50,10 @@ class IntroScreenDefaultState extends State<IntroScreenDefault> {
     );
   }
 
-  void onDonePress() {
+  void onDonePress() async {
     // Do what you want
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setBool('showWelcome', true);
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => Welcome()));
     log("End of slides");
