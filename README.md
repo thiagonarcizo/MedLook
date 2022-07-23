@@ -1,6 +1,6 @@
-# med
+# MedLook
 
-A new Flutter project.
+A new way to cotrol your meds!
 
 ## Getting Started
 
