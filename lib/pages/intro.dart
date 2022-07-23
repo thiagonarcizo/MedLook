@@ -2,10 +2,8 @@ import 'dart:developer';
 
 import 'package:med/pages/welcome.dart';
 
-import 'package:med/main.dart';
 import 'package:flutter/material.dart';
 import 'package:intro_slider/intro_slider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class IntroScreenDefault extends StatefulWidget {
   const IntroScreenDefault({Key? key}) : super(key: key);
@@ -27,7 +25,7 @@ class IntroScreenDefaultState extends State<IntroScreenDefault> {
         description:
             "Temos como objetivo facilitar a forma com que você gerencia os seus remédios.",
         pathImage: null,
-        backgroundColor: Color.fromARGB(255, 29, 29, 29),
+        backgroundColor: const Color.fromARGB(255, 29, 29, 29),
       ),
     );
     slides.add(
@@ -36,7 +34,7 @@ class IntroScreenDefaultState extends State<IntroScreenDefault> {
         description:
             "A principal funcionalidade do aplicativo é realizar o controle facilitado de horário que se adequa a sua rotina!",
         pathImage: null,
-        backgroundColor: Color.fromARGB(255, 65, 65, 65),
+        backgroundColor: const Color.fromARGB(255, 65, 65, 65),
       ),
     );
     slides.add(
@@ -45,7 +43,7 @@ class IntroScreenDefaultState extends State<IntroScreenDefault> {
         description:
             "Todas as suas informações serão salvas no aplicativo para que você não precise colocar tudo de novo toda vez.",
         pathImage: null,
-        backgroundColor: Color.fromARGB(255, 153, 153, 153),
+        backgroundColor: const Color.fromARGB(255, 153, 153, 153),
       ),
     );
   }
@@ -53,7 +51,7 @@ class IntroScreenDefaultState extends State<IntroScreenDefault> {
   void onDonePress() async {
     // Do what you want
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => Welcome()));
+        .push(MaterialPageRoute(builder: (context) => const Welcome()));
     log("End of slides");
   }
 

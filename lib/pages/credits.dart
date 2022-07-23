@@ -64,7 +64,7 @@ class Credits extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           primary: Colors.black,
                           onPrimary: Colors.white,
-                          fixedSize: const Size(125, 45),
+                          fixedSize: const Size(130, 45),
                         ),
                         child: const Text('ver mais'),
                       ),
@@ -83,7 +83,7 @@ class Credits extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           primary: Colors.black,
                           onPrimary: Colors.white,
-                          fixedSize: const Size(125, 45),
+                          fixedSize: const Size(130, 45),
                         ),
                         child: const Text('link do projeto'),
                       ),
