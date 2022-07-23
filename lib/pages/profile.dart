@@ -98,7 +98,7 @@ class _ProfileState extends State<Profile> {
                     style: ElevatedButton.styleFrom(
                       primary: Colors.black,
                       onPrimary: Colors.white,
-                      fixedSize: const Size(200, 50),
+                      fixedSize: const Size(250, 50),
                     ),
                     child: const Text('Desejo alterar meus dados'),
                   ),

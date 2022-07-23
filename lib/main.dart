@@ -1,11 +1,19 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:med/pages/home.dart';
 import 'package:med/pages/intro.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:window_size/window_size.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+    setWindowTitle('MedLook');
+    setWindowMinSize(const Size(1000, 650));
+    setWindowMaxSize(Size.infinite);
+  }
   final prefs = await SharedPreferences.getInstance();
   bool showWelcome = prefs.getBool('showWelcome') ?? false;
 
