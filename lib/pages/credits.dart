@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:med/pages/home.dart';
 import 'package:proste_bezier_curve/proste_bezier_curve.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'dart:io';
 
 class Credits extends StatelessWidget {
   const Credits({Key? key}) : super(key: key);
@@ -98,6 +99,14 @@ class Credits extends StatelessWidget {
                 child: Text('Versão: 1.0.0'),
               ),
             ),
+            if (Platform.isWindows || Platform.isLinux || Platform.isMacOS)
+              const Expanded(
+                child: Align(
+                  alignment: FractionalOffset.bottomCenter,
+                  child: Text(
+                      '*notar que essa aplicação desktop é uma versão adaptada de uma apliacação mobile!'),
+                ),
+              ),
             ClipPath(
               clipper: ProsteBezierCurve(
                 position: ClipPosition.top,
