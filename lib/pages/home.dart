@@ -121,14 +121,47 @@ class _SideMenuState extends State<SideMenu> {
               leading: const Icon(Icons.exit_to_app),
               title: const Text('Resetar'),
               onTap: () {
-                Navigator.pop(context);
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const Welcome()));
+                showAlertDialog(context);
               },
             ),
           ],
         ),
       ),
+    );
+  }
+
+  showAlertDialog(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = TextButton(
+      child: const Text("Cancelar"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+    Widget continueButton = TextButton(
+      child: const Text("Prosseguir", style: TextStyle(color: Colors.red)),
+      onPressed: () {
+        Navigator.pop(context);
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => const Welcome()));
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: const Text("Tem certeza?"),
+      content: const Text(
+          "Todos os seus dados serão apagados, e você será redirecionado para a tela de boas-vindas."),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 }

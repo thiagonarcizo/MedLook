@@ -13,7 +13,7 @@ class Credits extends StatelessWidget {
       drawer: SideMenu(),
       body: SafeArea(
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -34,31 +34,60 @@ class Credits extends StatelessWidget {
                 color: Colors.black,
               ),
             ),
-            Expanded(
-              child: ListView(
-                padding: EdgeInsets.zero,
+            Padding(
+              padding: const EdgeInsets.only(top: 48.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Center(
-                    child: Column(
-                      children: [
-                        const Text(
-                          'Feito por Thiago Narcizo em Flutter',
-                          style: TextStyle(fontSize: 24),
-                        ),
-                        ElevatedButton(
-                          onPressed: () async {
-                            final Uri uri =
-                                Uri.parse("https://www.narcizo.xyz/");
-                            if (await canLaunchUrl(uri)) {
-                              await launchUrl(uri);
-                            } else {
-                              print('can\'t launch');
-                            }
-                          },
-                          child: Text('oi'),
-                        ),
-                      ],
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: 16),
+                    child: Text(
+                      'feito por thiago narcizo em flutter',
+                      style: TextStyle(fontSize: 24),
                     ),
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () async {
+                          final Uri uri = Uri.parse("https://www.narcizo.xyz/");
+                          if (await canLaunchUrl(uri)) {
+                            await launchUrl(uri,
+                                mode: LaunchMode.externalApplication);
+                          } else {
+                            print('can\'t launch');
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.black,
+                          onPrimary: Colors.white,
+                          fixedSize: const Size(125, 45),
+                        ),
+                        child: const Text('ver mais'),
+                      ),
+                      const SizedBox(width: 24),
+                      ElevatedButton(
+                        onPressed: () async {
+                          final Uri uri = Uri.parse(
+                              "https://github.com/thiagonarcizo/MedLook");
+                          if (await canLaunchUrl(uri)) {
+                            await launchUrl(uri,
+                                mode: LaunchMode.externalApplication);
+                          } else {
+                            print('can\'t launch');
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.black,
+                          onPrimary: Colors.white,
+                          fixedSize: const Size(125, 45),
+                        ),
+                        child: const Text('link do projeto'),
+                      ),
+                    ],
                   ),
                 ],
               ),
