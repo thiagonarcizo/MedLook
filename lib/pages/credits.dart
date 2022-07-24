@@ -104,7 +104,7 @@ class Credits extends StatelessWidget {
                 child: Align(
                   alignment: FractionalOffset.bottomCenter,
                   child: Text(
-                      '*notar que essa aplicação desktop é uma versão adaptada de uma apliacação mobile!'),
+                      '*note que essa aplicação desktop é uma versão adaptada de uma apliacação mobile!'),
                 ),
               ),
             ClipPath(
