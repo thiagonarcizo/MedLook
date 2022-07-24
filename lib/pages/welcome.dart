@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:med/extensions/stringext.dart';
 import 'package:med/pages/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/person.dart';
@@ -40,7 +41,7 @@ class _WelcomeState extends State<Welcome> {
               Column(
                 children: [
                   Text(
-                    'Olá, ${nome.text}',
+                    'Olá, ${nome.text.toTitleCase()}',
                     style: const TextStyle(fontSize: 46),
                   ),
                   const SizedBox(height: 32),
@@ -89,11 +90,11 @@ class _WelcomeState extends State<Welcome> {
   }
 
   void confirmar() {
-    _write(nome.text, 'Nome');
-    person.nome = nome.text;
+    _write(nome.text.toTitleCase(), 'Nome');
+    person.nome = nome.text.toTitleCase();
     setState(() {
-      String name = nome.text;
-      print(name);
+      String name = nome.text.toTitleCase();
+      print(name.toTitleCase());
       Future.delayed(const Duration(seconds: 1), () {
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => Info()));
@@ -102,11 +103,11 @@ class _WelcomeState extends State<Welcome> {
   }
 
   void submit(String name) {
-    _write(nome.text, 'nome');
-    person.nome = nome.text;
+    _write(nome.text.toTitleCase(), 'nome');
+    person.nome = nome.text.toTitleCase();
     setState(() {
-      String name = nome.text;
-      print(name);
+      String name = nome.text.toTitleCase();
+      print(name.toTitleCase());
       Future.delayed(const Duration(seconds: 1), () {
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => Info()));

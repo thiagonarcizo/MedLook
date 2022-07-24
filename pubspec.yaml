@@ -39,6 +39,7 @@ dependencies:
   path_provider: ^2.0.11
   proste_bezier_curve: ^2.0.2
   url_launcher: ^6.1.5
+  auto_size_text: ^3.0.0
   window_size:
     git:
       url: git://github.com/google/flutter-desktop-embedding.git
