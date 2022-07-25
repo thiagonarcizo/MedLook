@@ -47,10 +47,26 @@ dependencies:
       url: git://github.com/google/flutter-desktop-embedding.git
       path: plugins/window_size
 
+msix_config:
+  display_name: MedLook
+  app_installer: #<-- app installer configuration
+    publish_folder_path: C:\Users\mack0\Documents\code\med\med\app_build_release
+    hours_between_update_checks: 24
+    automatic_background_task: true
+    update_blocks_activation: true
+    show_prompt: true
+    force_update_from_any_version: false
+  publisher_display_name: Thiago Narcizo
+  identity_name: xyz.narcizo.medlook
+  msix_version: 1.0.0.3
+  logo_path: C:\Users\mack0\Documents\code\med\med\assets\launcher\foreground.png
+  capabilities: internetClient
+
 dev_dependencies:
   flutter_launcher_icons: "^0.9.2"
   flutter_test:
     sdk: flutter
+  msix: ^3.6.2
   
 flutter_native_splash:
   color: '#ffffff'

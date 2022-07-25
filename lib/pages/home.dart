@@ -51,8 +51,12 @@ class _HomeState extends State<Home> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: const [
             Text(
-              'Tela de início',
+              '[tela de início]',
               style: TextStyle(fontSize: 30),
+            ),
+            Text(
+              '*ainda sob desenvolvimento',
+              style: TextStyle(fontSize: 16),
             ),
           ],
         ),
