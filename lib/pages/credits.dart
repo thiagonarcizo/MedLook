@@ -1,3 +1,4 @@
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:med/pages/home.dart';
 import 'package:proste_bezier_curve/proste_bezier_curve.dart';
@@ -140,6 +141,10 @@ class Credits extends StatelessWidget {
 PreferredSizeWidget upMenu() {
   return AppBar(
     title: const Text('Créditos'),
+    flexibleSpace: Container(
+      child: MoveWindow(),
+      width: 1,
+    ),
     actions: [
       Padding(
         padding: EdgeInsets.symmetric(horizontal: 16),

@@ -1,7 +1,11 @@
+import 'dart:io';
+
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:med/pages/profile.dart';
 import 'package:med/pages/welcome.dart';
 import '../repositories/data.dart';
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 
 import '../models/person.dart';
 import 'credits.dart';
@@ -126,6 +130,42 @@ class _SideMenuState extends State<SideMenu> {
                 showAlertDialog(context);
               },
             ),
+            if (Platform.isWindows || Platform.isLinux || Platform.isMacOS)
+              Container(color: Colors.black, height: 3),
+            if (Platform.isWindows || Platform.isLinux || Platform.isMacOS)
+              ListTile(
+                leading: const Icon(
+                  Icons.minimize,
+                ),
+                title: const Text(
+                  'Minimizar',
+                ),
+                onTap: () {
+                  appWindow.minimize();
+                },
+              ),
+            if (Platform.isWindows || Platform.isLinux || Platform.isMacOS)
+              ListTile(
+                leading: const Icon(
+                  Icons.square_outlined,
+                ),
+                title: const Text(
+                  'Maximizar',
+                ),
+                onTap: () {
+                  appWindow.maximizeOrRestore();
+                },
+              ),
+            if (Platform.isWindows || Platform.isLinux || Platform.isMacOS)
+              ListTile(
+                leading: const Icon(Icons.close,
+                    color: Color.fromARGB(255, 109, 53, 49)),
+                title: const Text('Fechar',
+                    style: TextStyle(color: Color.fromARGB(255, 109, 53, 49))),
+                onTap: () {
+                  appWindow.close();
+                },
+              ),
           ],
         ),
       ),
@@ -168,21 +208,97 @@ class _SideMenuState extends State<SideMenu> {
   }
 }
 
-PreferredSizeWidget upMenu() {
+AppBar upMenu() {
   return AppBar(
     title: Text('Início'),
+    flexibleSpace: Container(
+      child: MoveWindow(),
+      width: 25,
+    ),
     actions: [
       Padding(
         padding: EdgeInsets.symmetric(horizontal: 16),
         child: Row(
-          children: const [
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
             Icon(Icons.search),
             SizedBox(width: 12),
             Icon(Icons.more_vert),
+            if (Platform.isWindows || Platform.isLinux || Platform.isMacOS)
+              SizedBox(width: 12),
+            if (Platform.isWindows || Platform.isLinux || Platform.isMacOS)
+              WindowButtons(),
           ],
         ),
       ),
     ],
     backgroundColor: Colors.black,
   );
+}
+
+class TitleBar extends StatefulWidget {
+  const TitleBar({Key? key}) : super(key: key);
+
+  @override
+  State<TitleBar> createState() => _TitleBarState();
+}
+
+class _TitleBarState extends State<TitleBar> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        WindowTitleBarBox(
+          child: Row(
+            children: [
+              Expanded(
+                child: Container(),
+              ),
+              WindowButtons(),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class WindowButtons extends StatelessWidget {
+  const WindowButtons({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        MinimizeWindowButton(
+            animate: true,
+            colors: WindowButtonColors(
+                normal: Colors.transparent,
+                iconNormal: Colors.white,
+                mouseOver: Color(0xFF404040),
+                mouseDown: Color(0xFF202020),
+                iconMouseOver: Color(0xFFFFFFFF),
+                iconMouseDown: Color(0xFFF0F0F0))),
+        MaximizeWindowButton(
+            animate: true,
+            colors: WindowButtonColors(
+                normal: Colors.transparent,
+                iconNormal: Colors.white,
+                mouseOver: Color(0xFF404040),
+                mouseDown: Color(0xFF202020),
+                iconMouseOver: Color(0xFFFFFFFF),
+                iconMouseDown: Color(0xFFF0F0F0))),
+        CloseWindowButton(
+            animate: true,
+            colors: WindowButtonColors(
+                normal: Colors.transparent,
+                iconNormal: Colors.white,
+                mouseOver: Color.fromARGB(40, 255, 0, 0),
+                mouseDown: Color(0xFF202020),
+                iconMouseOver: Color.fromARGB(255, 255, 0, 0),
+                iconMouseDown: Color(0xFFF0F0F0))),
+      ],
+    );
+  }
 }

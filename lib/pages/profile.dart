@@ -1,3 +1,4 @@
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:med/extensions/stringext.dart';
 import 'package:med/pages/welcome.dart';
@@ -429,6 +430,10 @@ class _ProfileState extends State<Profile> {
 PreferredSizeWidget upMenu() {
   return AppBar(
     title: const Text('Perfil'),
+    flexibleSpace: Container(
+      child: MoveWindow(),
+      width: 1,
+    ),
     actions: [
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),

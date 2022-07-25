@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:med/extensions/stringext.dart';
 import 'package:med/pages/home.dart';
@@ -7,12 +8,6 @@ import '../models/person.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import '../repositories/data.dart';
-
-_write(String text, String fileName) async {
-  final Directory directory = await getApplicationDocumentsDirectory();
-  final File file = File('${directory.path}/$fileName.txt');
-  await file.writeAsString(text);
-}
 
 List<Person> infos = [];
 Person person = Person();
@@ -35,56 +30,85 @@ class _WelcomeState extends State<Welcome> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: SingleChildScrollView(
-            padding: EdgeInsets.zero,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  'Olá, ${nome.text.toTitleCase()}',
-                  style: const TextStyle(fontSize: 46),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+                child: MoveWindow(),
+                width: MediaQuery.of(context).size.width,
+                height: 36 //MediaQuery.of(context).size.height,
                 ),
-                const SizedBox(height: 32),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 50),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                        borderSide: const BorderSide(
-                          color: Colors.black,
-                          width: 1,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                        borderSide: const BorderSide(
-                          color: Colors.black,
-                          width: 1,
-                        ),
-                      ),
-                      labelText: 'Qual o seu nome?',
+            Spacer(flex: 1),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SingleChildScrollView(
+                padding: EdgeInsets.zero,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'Olá, ${nome.text.toTitleCase()}',
+                      style: const TextStyle(fontSize: 46),
                     ),
-                    controller: nome,
-                    onSubmitted: submit,
-                    maxLength: 25,
-                  ),
+                    const SizedBox(height: 32),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 50),
+                      child: TextField(
+                        decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: const BorderSide(
+                              color: Colors.black,
+                              width: 1,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: const BorderSide(
+                              color: Colors.black,
+                              width: 1,
+                            ),
+                          ),
+                          labelText: 'Qual o seu nome?',
+                        ),
+                        controller: nome,
+                        onSubmitted: submit,
+                        maxLength: 25,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    TextButton(
+                      onPressed: confirmar,
+                      style: TextButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        fixedSize: const Size(100, 50),
+                        primary: Colors.black,
+                      ),
+                      child: const Text('Confirma'),
+                    ),
+                    if (Platform.isWindows ||
+                        Platform.isLinux ||
+                        Platform.isMacOS)
+                      const SizedBox(height: 32),
+                    if (Platform.isWindows ||
+                        Platform.isLinux ||
+                        Platform.isMacOS)
+                      TextButton(
+                          onPressed: () => appWindow.close(),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text('Sair', style: TextStyle(color: Colors.red)),
+                              SizedBox(width: 12),
+                              Icon(Icons.exit_to_app, color: Colors.red),
+                            ],
+                          )),
+                  ],
                 ),
-                const SizedBox(height: 16),
-                TextButton(
-                  onPressed: confirmar,
-                  style: TextButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    fixedSize: const Size(100, 50),
-                    primary: Colors.black,
-                  ),
-                  child: const Text('Confirma'),
-                ),
-              ],
+              ),
             ),
-          ),
+            Spacer(flex: 1)
+          ],
         ),
       ),
     );
@@ -92,7 +116,6 @@ class _WelcomeState extends State<Welcome> {
 
   void confirmar() {
     if (nome.text.isNotEmpty) {
-      _write(nome.text.toTitleCase(), 'Nome');
       person.nome = nome.text.toTitleCase();
       setState(() {
         String name = nome.text.toTitleCase();
@@ -123,7 +146,6 @@ class _WelcomeState extends State<Welcome> {
   }
 
   void submit(String name) {
-    _write(nome.text.toTitleCase(), 'nome');
     person.nome = nome.text.toTitleCase();
     setState(() {
       String name = nome.text.toTitleCase();
@@ -171,7 +193,10 @@ class _InfoState extends State<Info> {
             Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const SizedBox(height: 32),
+                SizedBox(
+                  height: 32,
+                  child: MoveWindow(),
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Text(

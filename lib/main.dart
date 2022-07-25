@@ -5,6 +5,7 @@ import 'package:med/pages/home.dart';
 import 'package:med/pages/intro.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:window_size/window_size.dart';
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,6 +19,13 @@ void main() async {
   bool showWelcome = prefs.getBool('showWelcome') ?? false;
 
   runApp(MyApp(showWelcome: showWelcome));
+
+  doWhenWindowReady(() {
+    appWindow.alignment = Alignment.center;
+    appWindow.title = 'MedLook';
+    appWindow.minSize = const Size(1000, 650);
+    appWindow.show();
+  });
 }
 
 class MyApp extends StatelessWidget {
