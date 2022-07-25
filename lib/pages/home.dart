@@ -45,7 +45,7 @@ class _HomeState extends State<Home> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+          children: const [
             Text(
               'Tela de início',
               style: TextStyle(fontSize: 30),
@@ -63,6 +63,8 @@ class _HomeState extends State<Home> {
     );
   }
 }
+
+//A parte de baixo do código é o código do menu lateral e do menu superior
 
 class SideMenu extends StatefulWidget {
   SideMenu({Key? key}) : super(key: key);

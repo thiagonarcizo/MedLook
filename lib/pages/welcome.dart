@@ -35,54 +35,53 @@ class _WelcomeState extends State<Welcome> {
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Column(
-                children: [
-                  Text(
-                    'Olá, ${nome.text.toTitleCase()}',
-                    style: const TextStyle(fontSize: 46),
-                  ),
-                  const SizedBox(height: 32),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 50),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                          borderSide: const BorderSide(
-                            color: Colors.black,
-                            width: 1,
-                          ),
+          child: SingleChildScrollView(
+            padding: EdgeInsets.zero,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Olá, ${nome.text.toTitleCase()}',
+                  style: const TextStyle(fontSize: 46),
+                ),
+                const SizedBox(height: 32),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 50),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: const BorderSide(
+                          color: Colors.black,
+                          width: 1,
                         ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                          borderSide: const BorderSide(
-                            color: Colors.black,
-                            width: 1,
-                          ),
-                        ),
-                        labelText: 'Qual o seu nome?',
                       ),
-                      controller: nome,
-                      onSubmitted: submit,
-                      maxLength: 25,
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: const BorderSide(
+                          color: Colors.black,
+                          width: 1,
+                        ),
+                      ),
+                      labelText: 'Qual o seu nome?',
                     ),
+                    controller: nome,
+                    onSubmitted: submit,
+                    maxLength: 25,
                   ),
-                  const SizedBox(height: 16),
-                  TextButton(
-                    onPressed: confirmar,
-                    style: TextButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      fixedSize: const Size(100, 50),
-                      primary: Colors.black,
-                    ),
-                    child: const Text('Confirma'),
+                ),
+                const SizedBox(height: 16),
+                TextButton(
+                  onPressed: confirmar,
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    fixedSize: const Size(100, 50),
+                    primary: Colors.black,
                   ),
-                ],
-              ),
-            ],
+                  child: const Text('Confirma'),
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -204,98 +204,100 @@ class _ProfileState extends State<Profile> {
     return showDialog(
         context: context,
         builder: (context) {
-          return AlertDialog(
-            title: Text(text),
-            content: TextField(
-              keyboardType: type,
-              controller: _textFieldController,
-              maxLength: max,
-              decoration: const InputDecoration(
-                hintText: "Digite aqui",
+          return SingleChildScrollView(
+            child: AlertDialog(
+              title: Text(text),
+              content: TextField(
+                keyboardType: type,
+                controller: _textFieldController,
+                maxLength: max,
+                decoration: const InputDecoration(
+                  hintText: "Digite aqui",
+                ),
               ),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('CANCELAR'),
+                  onPressed: () {
+                    setState(() {
+                      Navigator.pop(context);
+                      _textFieldController.clear();
+                    });
+                  },
+                ),
+                TextButton(
+                  child: const Text('OK'),
+                  onPressed: () {
+                    if (text.contains('idade') &&
+                        _textFieldController.text.length <= 2 &&
+                        _textFieldController.text != null &&
+                        _textFieldController.text.toString() != '') {
+                      Person newPerson = Person(
+                        nome: personLoad.nome,
+                        idade: int.parse(_textFieldController.text),
+                        altura: personLoad.altura,
+                        peso: personLoad.peso,
+                      );
+                      setState(() {
+                        Navigator.pop(context);
+                        _textFieldController.clear();
+                      });
+                      sharedPref.save("user", newPerson);
+                      loadSharedPrefs();
+                    } else if (text.contains('altura') &&
+                        _textFieldController.text.length <= 3 &&
+                        _textFieldController.text != null &&
+                        _textFieldController.text.toString() != '') {
+                      Person newPerson = Person(
+                        nome: personLoad.nome,
+                        idade: personLoad.idade,
+                        altura: int.parse(_textFieldController.text),
+                        peso: personLoad.peso,
+                      );
+                      setState(() {
+                        Navigator.pop(context);
+                        _textFieldController.clear();
+                      });
+                      sharedPref.save("user", newPerson);
+                      loadSharedPrefs();
+                    } else if (text.contains('peso') &&
+                        _textFieldController.text.length <= 6 &&
+                        _textFieldController.text != null &&
+                        _textFieldController.text.toString() != '') {
+                      Person newPerson = Person(
+                        nome: personLoad.nome,
+                        idade: personLoad.idade,
+                        altura: personLoad.altura,
+                        peso: double.parse(_textFieldController.text),
+                      );
+                      setState(() {
+                        Navigator.pop(context);
+                        _textFieldController.clear();
+                      });
+                      sharedPref.save("user", newPerson);
+                      loadSharedPrefs();
+                    } else if (text.contains('nome') &&
+                        _textFieldController.text != null &&
+                        _textFieldController.text.toString() != '') {
+                      Person newPerson = Person(
+                        nome: _textFieldController.text.toTitleCase(),
+                        idade: personLoad.idade,
+                        altura: personLoad.altura,
+                        peso: personLoad.peso,
+                      );
+                      setState(() {
+                        Navigator.pop(context);
+                        _textFieldController.clear();
+                      });
+                      sharedPref.save("user", newPerson);
+                      loadSharedPrefs();
+                    } else {
+                      _showDialog(context);
+                    }
+                  },
+                ),
+              ],
             ),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('CANCELAR'),
-                onPressed: () {
-                  setState(() {
-                    Navigator.pop(context);
-                    _textFieldController.clear();
-                  });
-                },
-              ),
-              TextButton(
-                child: const Text('OK'),
-                onPressed: () {
-                  if (text.contains('idade') &&
-                      _textFieldController.text.length <= 2 &&
-                      _textFieldController.text != null &&
-                      _textFieldController.text.toString() != '') {
-                    Person newPerson = Person(
-                      nome: personLoad.nome,
-                      idade: int.parse(_textFieldController.text),
-                      altura: personLoad.altura,
-                      peso: personLoad.peso,
-                    );
-                    setState(() {
-                      Navigator.pop(context);
-                      _textFieldController.clear();
-                    });
-                    sharedPref.save("user", newPerson);
-                    loadSharedPrefs();
-                  } else if (text.contains('altura') &&
-                      _textFieldController.text.length <= 3 &&
-                      _textFieldController.text != null &&
-                      _textFieldController.text.toString() != '') {
-                    Person newPerson = Person(
-                      nome: personLoad.nome,
-                      idade: personLoad.idade,
-                      altura: int.parse(_textFieldController.text),
-                      peso: personLoad.peso,
-                    );
-                    setState(() {
-                      Navigator.pop(context);
-                      _textFieldController.clear();
-                    });
-                    sharedPref.save("user", newPerson);
-                    loadSharedPrefs();
-                  } else if (text.contains('peso') &&
-                      _textFieldController.text.length <= 6 &&
-                      _textFieldController.text != null &&
-                      _textFieldController.text.toString() != '') {
-                    Person newPerson = Person(
-                      nome: personLoad.nome,
-                      idade: personLoad.idade,
-                      altura: personLoad.altura,
-                      peso: double.parse(_textFieldController.text),
-                    );
-                    setState(() {
-                      Navigator.pop(context);
-                      _textFieldController.clear();
-                    });
-                    sharedPref.save("user", newPerson);
-                    loadSharedPrefs();
-                  } else if (text.contains('nome') &&
-                      _textFieldController.text != null &&
-                      _textFieldController.text.toString() != '') {
-                    Person newPerson = Person(
-                      nome: _textFieldController.text.toTitleCase(),
-                      idade: personLoad.idade,
-                      altura: personLoad.altura,
-                      peso: personLoad.peso,
-                    );
-                    setState(() {
-                      Navigator.pop(context);
-                      _textFieldController.clear();
-                    });
-                    sharedPref.save("user", newPerson);
-                    loadSharedPrefs();
-                  } else {
-                    _showDialog(context);
-                  }
-                },
-              ),
-            ],
           );
         });
   }
