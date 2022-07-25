@@ -17,6 +17,8 @@ _write(String text, String fileName) async {
 List<Person> infos = [];
 Person person = Person();
 
+String dropDownValue = 'nda';
+
 class Welcome extends StatefulWidget {
   const Welcome({Key? key}) : super(key: key);
 
@@ -89,16 +91,35 @@ class _WelcomeState extends State<Welcome> {
   }
 
   void confirmar() {
-    _write(nome.text.toTitleCase(), 'Nome');
-    person.nome = nome.text.toTitleCase();
-    setState(() {
-      String name = nome.text.toTitleCase();
-      print(name.toTitleCase());
-      Future.delayed(const Duration(seconds: 1), () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => Info()));
+    if (nome.text.isNotEmpty) {
+      _write(nome.text.toTitleCase(), 'Nome');
+      person.nome = nome.text.toTitleCase();
+      setState(() {
+        String name = nome.text.toTitleCase();
+        print(name.toTitleCase());
+        Future.delayed(const Duration(seconds: 1), () {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => Info()));
+        });
       });
-    });
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Preencha o campo nome'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('Ok'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   void submit(String name) {
@@ -115,12 +136,29 @@ class _WelcomeState extends State<Welcome> {
   }
 }
 
-class Info extends StatelessWidget {
+class Info extends StatefulWidget {
   Info({Key? key}) : super(key: key);
 
+  @override
+  State<Info> createState() => _InfoState();
+}
+
+class _InfoState extends State<Info> {
+  List<DropdownMenuItem<String>> get dropdownItems {
+    List<DropdownMenuItem<String>> menuItems = const [
+      DropdownMenuItem(value: "nda", child: Text("Prefiro não informar")),
+      DropdownMenuItem(value: "masculino", child: Text("Masculino")),
+      DropdownMenuItem(value: "feminino", child: Text("Feminino")),
+    ];
+    return menuItems;
+  }
+
   final TextEditingController idade = TextEditingController();
+
   final TextEditingController altura = TextEditingController();
+
   final TextEditingController peso = TextEditingController();
+
   SharedPref sharedPref = SharedPref();
 
   @override
@@ -218,43 +256,75 @@ class Info extends StatelessWidget {
                     keyboardType: TextInputType.number,
                   ),
                 ),
-                const SizedBox(height: 16),
-                ElevatedButton(
-                    onPressed: () async {
-                      if (idade.text != '' &&
-                          idade.text.length <= 2 &&
-                          altura.text != '' &&
-                          altura.text.length == 3 &&
-                          peso.text != '' &&
-                          peso.text.length <= 5) {
-                        person.idade = int.parse(idade.text);
-                        person.altura = int.parse(altura.text);
-                        person.peso = double.parse(peso.text);
-                        Person user = Person(
-                          nome: person.nome,
-                          idade: person.idade,
-                          altura: person.altura,
-                          peso: person.peso,
-                        );
-                        infos.add(user);
-                        idade.clear();
-                        altura.clear();
-                        peso.clear();
-                        sharedPref.save("user", person);
-                        final prefs = await SharedPreferences.getInstance();
-                        prefs.setBool('showWelcome', true);
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => Home()));
-                      } else {
-                        _showDialog(context);
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.black,
-                      onPrimary: Colors.white,
-                      fixedSize: const Size(100, 45),
+                const SizedBox(height: 32),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(bottom: 8.0),
+                          child: Text('Qual o seu sexo?',
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w400,
+                                  color: Color.fromARGB(255, 125, 125, 125))),
+                        ),
+                        DropdownButton<String>(
+                            value: dropDownValue,
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                dropDownValue = newValue!;
+                              });
+                            },
+                            items: dropdownItems),
+                      ],
                     ),
-                    child: const Text('Prosseguir')),
+                    const SizedBox(width: 16),
+                    ElevatedButton(
+                        onPressed: () async {
+                          if (idade.text != '' &&
+                              idade.text.length <= 2 &&
+                              altura.text != '' &&
+                              altura.text.length == 3 &&
+                              peso.text != '' &&
+                              peso.text.length <= 5) {
+                            person.idade = int.parse(idade.text);
+                            person.altura = int.parse(altura.text);
+                            person.peso = double.parse(peso.text);
+                            person.sexo = dropDownValue.toString();
+                            Person user = Person(
+                              nome: person.nome,
+                              idade: person.idade,
+                              altura: person.altura,
+                              peso: person.peso,
+                              sexo: person.sexo,
+                            );
+                            infos.add(user);
+                            idade.clear();
+                            altura.clear();
+                            peso.clear();
+                            sharedPref.save("user", person);
+                            final prefs = await SharedPreferences.getInstance();
+                            prefs.setBool('showWelcome', true);
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => Home()));
+                          } else {
+                            _showDialog(context);
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.black,
+                          onPrimary: Colors.white,
+                          fixedSize: const Size(100, 45),
+                        ),
+                        child: const Text('Prosseguir')),
+                  ],
+                ),
               ],
             ),
           ]),
