@@ -34,7 +34,10 @@ class _WelcomeState extends State<Welcome> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-                child: MoveWindow(),
+                child:
+                    Platform.isWindows || Platform.isLinux || Platform.isMacOS
+                        ? MoveWindow()
+                        : null,
                 width: MediaQuery.of(context).size.width,
                 height: 36 //MediaQuery.of(context).size.height,
                 ),
@@ -195,7 +198,10 @@ class _InfoState extends State<Info> {
               children: [
                 SizedBox(
                   height: 32,
-                  child: MoveWindow(),
+                  child:
+                      Platform.isWindows || Platform.isLinux || Platform.isMacOS
+                          ? MoveWindow()
+                          : null,
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),

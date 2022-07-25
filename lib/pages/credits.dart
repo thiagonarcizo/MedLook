@@ -141,10 +141,12 @@ class Credits extends StatelessWidget {
 PreferredSizeWidget upMenu() {
   return AppBar(
     title: const Text('Créditos'),
-    flexibleSpace: Container(
-      child: MoveWindow(),
-      width: 1,
-    ),
+    flexibleSpace: Platform.isWindows || Platform.isLinux || Platform.isMacOS
+        ? Container(
+            child: MoveWindow(),
+            width: 1,
+          )
+        : null,
     actions: [
       Padding(
         padding: EdgeInsets.symmetric(horizontal: 16),

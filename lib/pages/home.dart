@@ -83,6 +83,7 @@ class _SideMenuState extends State<SideMenu> {
     return SafeArea(
       child: Drawer(
         child: ListView(
+          physics: const NeverScrollableScrollPhysics(),
           padding: EdgeInsets.zero,
           children: [
             const Padding(
@@ -211,10 +212,12 @@ class _SideMenuState extends State<SideMenu> {
 AppBar upMenu() {
   return AppBar(
     title: Text('Início'),
-    flexibleSpace: Container(
-      child: MoveWindow(),
-      width: 25,
-    ),
+    flexibleSpace: Platform.isWindows || Platform.isLinux || Platform.isMacOS
+        ? Container(
+            child: MoveWindow(),
+            width: 25,
+          )
+        : null,
     actions: [
       Padding(
         padding: EdgeInsets.symmetric(horizontal: 16),

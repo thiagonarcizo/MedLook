@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:med/extensions/stringext.dart';
@@ -430,10 +432,12 @@ class _ProfileState extends State<Profile> {
 PreferredSizeWidget upMenu() {
   return AppBar(
     title: const Text('Perfil'),
-    flexibleSpace: Container(
-      child: MoveWindow(),
-      width: 1,
-    ),
+    flexibleSpace: Platform.isWindows || Platform.isLinux || Platform.isMacOS
+        ? Container(
+            child: MoveWindow(),
+            width: 1,
+          )
+        : null,
     actions: [
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
