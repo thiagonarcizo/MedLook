@@ -5,7 +5,9 @@ import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:med/extensions/stringext.dart';
 import 'package:med/models/med.dart';
+import 'package:med/pages/home.dart';
 import 'package:med/pages/med_add/clock1.dart';
+import 'package:med/pages/med_add/clock2.dart';
 import 'package:med/repositories/data.dart';
 
 class MedAdd4 extends StatefulWidget {
@@ -68,9 +70,11 @@ class _AddMedState extends State<MedAdd4> {
       appBar: AppBar(
         title: AutoSizeText(
           '${medLoad.quantidade} ${medLoad.tipoQuantidade} de ${medLoad.nome}',
-          style: const TextStyle(
+          style: TextStyle(
             color: Colors.white,
-            fontSize: 56,
+            fontSize: Platform.isWindows || Platform.isLinux || Platform.isMacOS
+                ? 36
+                : 56,
           ),
           maxLines: 1,
         ),
@@ -106,13 +110,16 @@ class _AddMedState extends State<MedAdd4> {
                   items: dropdownItems),
             ),
             const SizedBox(height: 32),
-            TextButton(
-              onPressed: confirmar,
-              style: TextButton.styleFrom(
-                backgroundColor: Colors.white,
-                fixedSize: const Size(100, 50),
+            Center(
+              child: TextButton(
+                onPressed: confirmar,
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  fixedSize: Size(MediaQuery.of(context).size.width * 0.25,
+                      MediaQuery.of(context).size.height * 0.07),
+                ),
+                child: const Text('Próximo'),
               ),
-              child: const Text('Próximo'),
             ),
           ],
         ),
@@ -170,8 +177,24 @@ class _AddMedState extends State<MedAdd4> {
     setState(() {
       String name = nomeMed.text.toTitleCase();
       print(name.toTitleCase());
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => Clock1()));
+      if (dropDownValue == '1')
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => Clock1()));
+      else if (dropDownValue == '2')
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => Clock2()));
+      /*else if (dropDownValue == '3')
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => Clock3()));
+      else if (dropDownValue == '4')
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => Clock4()));
+      else if (dropDownValue == '6')
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => Clock6()));
+      else if (dropDownValue == '8')
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => Clock8()));*/
     });
   }
 }

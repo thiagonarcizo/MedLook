@@ -2,8 +2,6 @@
 
 import 'dart:io';
 
-import 'dart:math' as math;
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
@@ -12,18 +10,18 @@ import 'package:med/models/med.dart';
 import 'package:med/pages/home.dart';
 import 'package:med/repositories/data.dart';
 import 'package:med/repositories/meddata.dart';
-import 'package:analog_clock/analog_clock.dart';
 
 import '../../models/meds.dart';
+import '../../models/todbuilder.dart';
 
-class Clock1 extends StatefulWidget {
-  Clock1({Key? key}) : super(key: key);
+class Clock2 extends StatefulWidget {
+  Clock2({Key? key}) : super(key: key);
 
   @override
-  State<Clock1> createState() => _AddMedState();
+  State<Clock2> createState() => _AddMedState();
 }
 
-class _AddMedState extends State<Clock1> {
+class _AddMedState extends State<Clock2> {
 //sharedPref.save("med", med);
   //loadSharedPrefs();
 
@@ -55,6 +53,8 @@ class _AddMedState extends State<Clock1> {
   final TextEditingController nomeMed = TextEditingController();
 
   TimeOfDay selectedTime = TimeOfDay.now();
+
+  TimeOfDay selectedTime2 = TimeOfDay.now();
 
   loadSharedPrefs() async {
     try {
@@ -94,14 +94,29 @@ class _AddMedState extends State<Clock1> {
           shrinkWrap: true,
           children: [
             Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  _selectTime(context);
-                },
-                style: ElevatedButton.styleFrom(
-                  fixedSize: const Size(100, 45),
-                ),
-                child: Text("${selectedTime.format(context)}"),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      _selectTime(context);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      fixedSize: const Size(100, 45),
+                    ),
+                    child: Text("${selectedTime.format(context)}"),
+                  ),
+                  const SizedBox(width: 16),
+                  ElevatedButton(
+                    onPressed: () {
+                      _selectTime2(context);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      fixedSize: const Size(100, 45),
+                    ),
+                    child: Text("${selectedTime2.format(context)}"),
+                  ),
+                ],
               ),
             ),
             SizedBox(height: 32),
@@ -137,6 +152,29 @@ class _AddMedState extends State<Clock1> {
     if (timeOfDay != null && timeOfDay != selectedTime) {
       setState(() {
         selectedTime = timeOfDay;
+        selectedTime2 =
+            TimeOfDayBuilder(time: selectedTime, amount: 2).timeFix();
+      });
+    }
+  }
+
+  _selectTime2(BuildContext context) async {
+    final TimeOfDay? timeOfDay = await showTimePicker(
+      context: context,
+      initialTime: selectedTime2,
+      initialEntryMode: TimePickerEntryMode.dial,
+      builder: (BuildContext context, Widget? child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+          child: child!,
+        );
+      },
+    );
+    if (timeOfDay != null && timeOfDay != selectedTime2) {
+      setState(() {
+        selectedTime2 = timeOfDay;
+        selectedTime =
+            TimeOfDayBuilder(time: selectedTime2, amount: 2).timeFix();
       });
     }
   }
@@ -150,7 +188,8 @@ class _AddMedState extends State<Clock1> {
           quantidade: medLoad.quantidade,
           tipoQuantidade: medLoad.tipoQuantidade,
           posologia: medLoad.posologia,
-          hora1: selectedTime.format(context));
+          hora1: selectedTime.format(context),
+          hora2: selectedTime2.format(context));
       medsLoad.add(med);
       sharedPrefMed.save(medsLoad);
       Navigator.of(context)

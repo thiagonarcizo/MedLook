@@ -79,8 +79,8 @@ class _AddMedState extends State<MedAdd3> {
           children: [
             Center(
               child: Text(
-                'Qual é a quantidade?',
-                style: const TextStyle(fontSize: 36),
+                'Qual é a quantidade de uma vez?',
+                style: const TextStyle(fontSize: 24),
               ),
             ),
             SizedBox(height: 32),
@@ -122,13 +122,16 @@ class _AddMedState extends State<MedAdd3> {
                   items: dropdownItems),
             ),
             const SizedBox(height: 16),
-            TextButton(
-              onPressed: confirmar,
-              style: TextButton.styleFrom(
-                backgroundColor: Colors.white,
-                fixedSize: const Size(100, 50),
+            Center(
+              child: TextButton(
+                onPressed: confirmar,
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  fixedSize: Size(MediaQuery.of(context).size.width * 0.25,
+                      MediaQuery.of(context).size.height * 0.07),
+                ),
+                child: const Text('Próximo'),
               ),
-              child: const Text('Próximo'),
             ),
           ],
         ),

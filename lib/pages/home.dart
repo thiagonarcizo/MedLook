@@ -11,6 +11,7 @@ import '../repositories/data.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 
 import '../models/person.dart';
+import '../widgets/med_list_item.dart';
 import 'credits.dart';
 import 'med_add/medadd.dart';
 
@@ -72,10 +73,13 @@ class _HomeState extends State<Home> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 if (medsLoad.isNotEmpty)
-                  Text(
-                    'Remédio: ${medsLoad.first.nome}',
-                    style: TextStyle(fontSize: 30),
-                  )
+                  for (Med med in medsLoad)
+                    Center(
+                      child: MedListItem(
+                        med: med,
+                        onDelete: onDelete,
+                      ),
+                    )
                 else
                   Text(
                     'Remédio: Nenhum remédio',
@@ -106,6 +110,36 @@ class _HomeState extends State<Home> {
           print('Botão adicionar pressionado');
         },
         child: const Icon(Icons.add),
+      ),
+    );
+  }
+
+  void onDelete(Med med) {
+    deletedMed = med;
+    deletedMedPos = medsLoad.indexOf(med);
+
+    setState(() {
+      medsLoad.remove(med);
+    });
+    sharedPrefMed.save(medsLoad);
+
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Remédio ${med.nome} deletado',
+            style: const TextStyle(color: Colors.black)),
+        backgroundColor: Colors.white,
+        action: SnackBarAction(
+          label: 'Desfazer',
+          textColor: Colors.black,
+          onPressed: () {
+            setState(() {
+              medsLoad.insert(deletedMedPos!, deletedMed!);
+            });
+            sharedPrefMed.save(medsLoad);
+          },
+        ),
+        duration: const Duration(seconds: 5),
       ),
     );
   }

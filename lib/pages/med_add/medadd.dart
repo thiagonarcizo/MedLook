@@ -97,13 +97,16 @@ class _AddMedState extends State<AddMed> {
               ),
             ),
             const SizedBox(height: 16),
-            TextButton(
-              onPressed: confirmar,
-              style: TextButton.styleFrom(
-                backgroundColor: Colors.white,
-                fixedSize: const Size(100, 50),
+            Center(
+              child: TextButton(
+                onPressed: confirmar,
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  fixedSize: Size(MediaQuery.of(context).size.width * 0.25,
+                      MediaQuery.of(context).size.height * 0.07),
+                ),
+                child: const Text('Próximo'),
               ),
-              child: const Text('Próximo'),
             ),
           ],
         ),
