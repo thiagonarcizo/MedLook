@@ -2,13 +2,17 @@ import 'dart:io';
 
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
+import 'package:med/models/med.dart';
+import 'package:med/models/meds.dart';
 import 'package:med/pages/profile.dart';
 import 'package:med/pages/welcome.dart';
+import 'package:med/repositories/meddata.dart';
 import '../repositories/data.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 
 import '../models/person.dart';
 import 'credits.dart';
+import 'med_add/medadd.dart';
 
 class Home extends StatefulWidget {
   Home({Key? key}) : super(key: key);
@@ -17,27 +21,39 @@ class Home extends StatefulWidget {
   State<Home> createState() => _HomeState();
 }
 
+List<Med> medsLoad = [];
+
 class _HomeState extends State<Home> {
   @override
   void initState() {
-    loadSharedPrefs();
     super.initState();
+    loadSharedPrefsPerson();
+    sharedPrefMed.read().then((value) {
+      setState(() {
+        medsLoad = value;
+      });
+    });
   }
 
   SharedPref sharedPref = SharedPref();
+
+  SharedPrefMed sharedPrefMed = SharedPrefMed();
 
   Person personSave = Person();
 
   Person personLoad = Person();
 
-  loadSharedPrefs() async {
+  Med? deletedMed;
+  int? deletedMedPos;
+
+  loadSharedPrefsPerson() async {
     try {
       Person person = Person.fromJson(await sharedPref.read("user"));
       setState(() {
         personLoad = person;
       });
     } catch (Excepetion) {
-      print("Nothing found!");
+      print("No person found!");
     }
   }
 
@@ -47,16 +63,37 @@ class _HomeState extends State<Home> {
       appBar: upMenu(),
       drawer: SideMenu(),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Text(
-              '[tela de início]',
-              style: TextStyle(fontSize: 30),
-            ),
-            Text(
-              '*ainda sob desenvolvimento',
-              style: TextStyle(fontSize: 16),
+        child: ListView(
+          padding: EdgeInsets.zero,
+          shrinkWrap: true,
+          children: [
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (medsLoad.isNotEmpty)
+                  Text(
+                    'Remédio: ${medsLoad.first.nome}',
+                    style: TextStyle(fontSize: 30),
+                  )
+                else
+                  Text(
+                    'Remédio: Nenhum remédio',
+                    style: TextStyle(fontSize: 26),
+                  ),
+                Text(
+                  '*ainda sob desenvolvimento',
+                  style: TextStyle(fontSize: 16),
+                ),
+                ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        medsLoad.clear();
+                        sharedPrefMed.save(medsLoad);
+                      });
+                    },
+                    child: Text('Deletar todos os remédios')),
+              ],
             ),
           ],
         ),
@@ -64,6 +101,8 @@ class _HomeState extends State<Home> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.black,
         onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => AddMed()));
           print('Botão adicionar pressionado');
         },
         child: const Icon(Icons.add),

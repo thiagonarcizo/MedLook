@@ -349,8 +349,6 @@ class _InfoState extends State<Info> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.black,
-                          onPrimary: Colors.white,
                           fixedSize: const Size(100, 45),
                         ),
                         child: const Text('Prosseguir')),
