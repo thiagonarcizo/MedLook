@@ -54,7 +54,7 @@ class _AddMedState extends State<Clock2> {
 
   TimeOfDay selectedTime = TimeOfDay.now();
 
-  TimeOfDay selectedTime2 = TimeOfDay.now();
+  late TimeOfDay selectedTime2 = TimeOfDay.now();
 
   loadSharedPrefs() async {
     try {
@@ -94,31 +94,25 @@ class _AddMedState extends State<Clock2> {
           shrinkWrap: true,
           children: [
             Center(
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      _selectTime(context);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      fixedSize: const Size(100, 45),
-                    ),
-                    child: Text("${selectedTime.format(context)}"),
-                  ),
-                  const SizedBox(width: 16),
-                  ElevatedButton(
-                    onPressed: () {
-                      _selectTime2(context);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      fixedSize: const Size(100, 45),
-                    ),
-                    child: Text("${selectedTime2.format(context)}"),
-                  ),
-                ],
+                child: Text(
+                    "Selecione pelo menos uma hora no dia que deseja tomar o medicamento:")),
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  _selectTime(context);
+                },
+                style: ElevatedButton.styleFrom(
+                  fixedSize: const Size(100, 45),
+                ),
+                child: Text("${selectedTime.format(context)}"),
               ),
             ),
+            SizedBox(height: 32),
+            Text(
+                'Os horários para tormar o medicamento são: ${TimeOfDayBuilder(horarios: [
+                  selectedTime,
+                  selectedTime2
+                ]).timeSort(context)}'),
             SizedBox(height: 32),
             Center(
               child: TextButton(
@@ -154,27 +148,6 @@ class _AddMedState extends State<Clock2> {
         selectedTime = timeOfDay;
         selectedTime2 =
             TimeOfDayBuilder(time: selectedTime, amount: 2).timeFix();
-      });
-    }
-  }
-
-  _selectTime2(BuildContext context) async {
-    final TimeOfDay? timeOfDay = await showTimePicker(
-      context: context,
-      initialTime: selectedTime2,
-      initialEntryMode: TimePickerEntryMode.dial,
-      builder: (BuildContext context, Widget? child) {
-        return MediaQuery(
-          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-          child: child!,
-        );
-      },
-    );
-    if (timeOfDay != null && timeOfDay != selectedTime2) {
-      setState(() {
-        selectedTime2 = timeOfDay;
-        selectedTime =
-            TimeOfDayBuilder(time: selectedTime2, amount: 2).timeFix();
       });
     }
   }

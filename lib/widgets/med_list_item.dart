@@ -96,7 +96,10 @@ class _MedListItemState extends State<MedListItem> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text('Dosagem: ${widget.med.dosagem} ${widget.med.tipoDosagem}'),
+          if (widget.med.dosagem != null)
+            Text('Dosagem: ${widget.med.dosagem} ${widget.med.tipoDosagem}')
+          else
+            Text('Dosagem não informada'),
           const SizedBox(height: 8),
           Text(
               'Quantidade: ${widget.med.quantidade} ${widget.med.tipoQuantidade}'),

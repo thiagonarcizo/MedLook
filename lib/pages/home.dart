@@ -81,14 +81,13 @@ class _HomeState extends State<Home> {
                       ),
                     )
                 else
-                  Text(
-                    'Remédio: Nenhum remédio',
-                    style: TextStyle(fontSize: 26),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Remédio: Nenhum remédio',
+                      style: TextStyle(fontSize: 26),
+                    ),
                   ),
-                Text(
-                  '*ainda sob desenvolvimento',
-                  style: TextStyle(fontSize: 16),
-                ),
                 ElevatedButton(
                     onPressed: () {
                       setState(() {

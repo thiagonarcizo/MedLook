@@ -36,6 +36,8 @@ class _AddMedState extends State<MedAdd2> {
 
   final TextEditingController _textFieldController = TextEditingController();
 
+  bool isChecked = false;
+
   loadSharedPrefs() async {
     try {
       Med med = Med.fromJson(await sharedPref.read("med"));
@@ -51,7 +53,8 @@ class _AddMedState extends State<MedAdd2> {
     List<DropdownMenuItem<String>> menuItems = const [
       DropdownMenuItem(value: "mg", child: Text("mg")),
       DropdownMenuItem(value: "g", child: Text("g")),
-      DropdownMenuItem(value: "ng", child: Text("ng")),
+      DropdownMenuItem(value: "mcg", child: Text("mcg")),
+      DropdownMenuItem(value: "%", child: Text("%")),
       DropdownMenuItem(value: "UI", child: Text("UI")),
     ];
     return menuItems;
@@ -105,31 +108,68 @@ class _AddMedState extends State<MedAdd2> {
                 ),
                 controller: nomeMed,
                 keyboardType: TextInputType.number,
+                enabled: isChecked ? false : true,
                 //onSubmitted: submitedMed,
                 maxLength: 8,
               ),
             ),
             const SizedBox(height: 16),
             Center(
-              child: DropdownButton<String>(
-                  value: dropDownValue,
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      dropDownValue = newValue!;
-                    });
-                  },
-                  items: dropdownItems),
+              child: isChecked
+                  ? null
+                  : DropdownButton<String>(
+                      value: isChecked ? null : dropDownValue,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          dropDownValue = newValue!;
+                        });
+                      },
+                      items: dropdownItems),
             ),
             const SizedBox(height: 16),
             Center(
-              child: TextButton(
-                onPressed: confirmar,
-                style: TextButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  fixedSize: Size(MediaQuery.of(context).size.width * 0.25,
-                      MediaQuery.of(context).size.height * 0.07),
-                ),
-                child: const Text('Próximo'),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Checkbox(
+                    checkColor: Colors.white,
+                    value: isChecked,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        isChecked = value!;
+                      });
+                    },
+                  ),
+                  GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          if (isChecked == false) {
+                            isChecked = true;
+                          } else if (isChecked == true) {
+                            isChecked = false;
+                          }
+                        });
+                      },
+                      child: Container(
+                          color: Colors.transparent,
+                          width: 104,
+                          height: 50,
+                          child: Center(child: Text('Não sei informar')))),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16.0),
+                    child: TextButton(
+                      onPressed: confirmar,
+                      style: TextButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        fixedSize: Size(
+                            MediaQuery.of(context).size.width * 0.25,
+                            MediaQuery.of(context).size.height * 0.07),
+                      ),
+                      child: const Text('Próximo'),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
@@ -139,11 +179,23 @@ class _AddMedState extends State<MedAdd2> {
   }
 
   void submitedMed(String name) {
-    if (nomeMed.text.isNotEmpty) {
+    if (nomeMed.text.isNotEmpty && isChecked == false) {
       Med med = Med();
       med.nome = medLoad.nome;
       med.dosagem = int.parse(nomeMed.text);
       med.tipoDosagem = dropDownValue;
+      sharedPref.save("med", med);
+      setState(() {
+        String name = nomeMed.text.toTitleCase();
+        print(name.toTitleCase());
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => MedAdd3()));
+      });
+    } else if (isChecked == true) {
+      Med med = Med();
+      med.nome = medLoad.nome;
+      med.dosagem = null;
+      med.tipoDosagem = null;
       sharedPref.save("med", med);
       setState(() {
         String name = nomeMed.text.toTitleCase();
@@ -172,11 +224,23 @@ class _AddMedState extends State<MedAdd2> {
   }
 
   void confirmar() {
-    if (nomeMed.text.isNotEmpty) {
+    if (nomeMed.text.isNotEmpty && isChecked == false) {
       Med med = Med();
       med.nome = medLoad.nome;
       med.dosagem = int.parse(nomeMed.text);
       med.tipoDosagem = dropDownValue;
+      sharedPref.save("med", med);
+      setState(() {
+        String name = nomeMed.text.toTitleCase();
+        print(name.toTitleCase());
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => MedAdd3()));
+      });
+    } else if (isChecked == true) {
+      Med med = Med();
+      med.nome = medLoad.nome;
+      med.dosagem = null;
+      med.tipoDosagem = null;
       sharedPref.save("med", med);
       setState(() {
         String name = nomeMed.text.toTitleCase();
