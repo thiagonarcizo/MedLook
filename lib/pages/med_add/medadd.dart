@@ -41,8 +41,7 @@ class _AddMedState extends State<AddMed> {
         medLoad = med;
       });
     } catch (Excepetion) {
-      //print("No med found!");
-      print(Excepetion);
+      print("No med found!");
     }
   }
 

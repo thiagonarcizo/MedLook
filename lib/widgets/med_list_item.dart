@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:med/models/med.dart';
 import 'package:intl/intl.dart';
+import 'package:med/models/todbuilder.dart';
 
 class MedListItem extends StatefulWidget {
   MedListItem({
@@ -29,7 +30,24 @@ class _MedListItemState extends State<MedListItem> {
     widget.med.hora8,
   ];
 
-  late List<String> horarios = horariosNull.whereType<String>().toList();
+  late List<String> horarios = horariosNull.whereType<String>().toList()
+    ..sort();
+
+  DateTime agora = DateTime.now();
+
+  List<DateTime> horasDT = []; //não chamar essa var!!!
+
+  List<DateTime> horasParaDT() {
+    //chamar essa função sempre que quiser a lista de horas em DT
+    for (String horas in horarios) {
+      horasDT.add(
+          DateTime.parse('${DateFormat('yyyy-MM-dd').format(agora)} $horas'));
+    }
+    horasDT.sort();
+    return horasDT;
+  }
+
+  late TimeOfDay tempoFaltante = TimeOfDayBuilder().timeUntil(horasParaDT());
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +87,7 @@ class _MedListItemState extends State<MedListItem> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    'Próxima dose em:',
+                    'Próxima dose (desde que a aplicação foi aberta) em: ${tempoFaltante.format(context)}',
                     style: const TextStyle(
                       fontSize: 12,
                     ),
@@ -109,7 +127,7 @@ class _MedListItemState extends State<MedListItem> {
           const SizedBox(height: 12),
           Text('Horário(s): ${horarios.join('; ')}'),
           const SizedBox(height: 12),
-          if (widget.med.periodoNaoInformado == true)
+          if (widget.med.diasTratamento != 0)
             Text(
                 'Período: de ${DateFormat('dd/MM/yyyy').format(widget.med.dataInicio!)} até ${DateFormat('dd/MM/yyyy').format(widget.med.dataFim!)}, totalizando ${widget.med.diasTratamento} dia(s) de tratamento')
           else

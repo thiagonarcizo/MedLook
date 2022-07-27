@@ -22,9 +22,9 @@ void main() async {
 
   bool showWelcome = prefs.getBool('showWelcome') ?? false;
 
-  await Firebase.initializeApp(
+  /*await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-  );
+  );*/
 
   runApp(MyApp(showWelcome: showWelcome));
 

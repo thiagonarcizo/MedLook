@@ -8,6 +8,10 @@ import 'package:med/models/med.dart';
 import 'package:med/pages/home.dart';
 import 'package:med/pages/med_add/clock1.dart';
 import 'package:med/pages/med_add/clock2.dart';
+import 'package:med/pages/med_add/clock3.dart';
+import 'package:med/pages/med_add/clock4.dart';
+import 'package:med/pages/med_add/clock6.dart';
+import 'package:med/pages/med_add/clock8.dart';
 import 'package:med/repositories/data.dart';
 
 class MedAdd4 extends StatefulWidget {
@@ -183,7 +187,7 @@ class _AddMedState extends State<MedAdd4> {
       else if (dropDownValue == '2')
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => Clock2()));
-      /*else if (dropDownValue == '3')
+      else if (dropDownValue == '3')
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => Clock3()));
       else if (dropDownValue == '4')
@@ -194,7 +198,7 @@ class _AddMedState extends State<MedAdd4> {
             .push(MaterialPageRoute(builder: (context) => Clock6()));
       else if (dropDownValue == '8')
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => Clock8()));*/
+            .push(MaterialPageRoute(builder: (context) => Clock8()));
     });
   }
 }

@@ -75,8 +75,7 @@ class _AddMedState extends State<Clock1> {
         title: AutoSizeText(
           '${medLoad.quantidade} ${medLoad.tipoQuantidade} de ${medLoad.nome}',
           style: const TextStyle(
-            color: Colors.white,
-            fontSize: 56,
+            fontSize: 32,
           ),
           maxLines: 1,
         ),

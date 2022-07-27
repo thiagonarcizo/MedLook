@@ -7,7 +7,6 @@ import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:med/extensions/stringext.dart';
 import 'package:med/models/med.dart';
-import 'package:med/pages/home.dart';
 import 'package:med/pages/med_add/medcalendar.dart';
 import 'package:med/repositories/data.dart';
 import 'package:med/repositories/meddata.dart';
@@ -75,8 +74,7 @@ class _AddMedState extends State<Clock2> {
         title: AutoSizeText(
           '${medLoad.quantidade} ${medLoad.tipoQuantidade} de ${medLoad.nome}',
           style: const TextStyle(
-            color: Colors.white,
-            fontSize: 56,
+            fontSize: 32,
           ),
           maxLines: 1,
         ),
@@ -95,8 +93,21 @@ class _AddMedState extends State<Clock2> {
           shrinkWrap: true,
           children: [
             Center(
-                child: Text(
-                    "Selecione pelo menos uma hora no dia que deseja tomar o medicamento:")),
+                child: Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                child: AutoSizeText(
+                  "Selecione pelo menos uma hora no dia em que deseja tomar o medicamento:",
+                  style: TextStyle(fontSize: 48),
+                  maxLines: 1,
+                ),
+              ),
+            )),
+            Center(
+              child: SizedBox(
+                height: 32,
+              ),
+            ),
             Center(
               child: ElevatedButton(
                 onPressed: () {
@@ -108,12 +119,20 @@ class _AddMedState extends State<Clock2> {
                 child: Text("${selectedTime.format(context)}"),
               ),
             ),
-            SizedBox(height: 32),
-            Text(
-                'Os horários para tormar o medicamento são: ${TimeOfDayBuilder(horarios: [
-                  selectedTime,
-                  selectedTime2
-                ]).timeSort(context)}'),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 100.0),
+                child: AutoSizeText(
+                  'Os horários para tormar o medicamento são:\n${TimeOfDayBuilder(horarios: [
+                        selectedTime,
+                        selectedTime2
+                      ]).timeSort(context).join('; ')}',
+                  style: TextStyle(fontSize: 36),
+                  maxFontSize: 36,
+                  maxLines: 3,
+                ),
+              ),
+            ),
             SizedBox(height: 32),
             Center(
               child: TextButton(

@@ -106,7 +106,6 @@ class _HomeState extends State<Home> {
         onPressed: () {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => AddMed()));
-          print('Botão adicionar pressionado');
         },
         child: const Icon(Icons.add),
       ),
