@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "6384007456",
+    "project_id": "narcizomedlook",
+    "storage_bucket": "narcizomedlook.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:6384007456:android:d36b59c37043e80ed93f45",
+        "android_client_info": {
+          "package_name": "xyz.narcizo.med"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "6384007456-fjgb47bsm8gp1lr9cka107rqaeis4ib9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAW_SCDdAbySvqqBNZ2_LuL3wDwL_KCKpw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "6384007456-fjgb47bsm8gp1lr9cka107rqaeis4ib9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

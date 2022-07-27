@@ -50,6 +50,7 @@ dependencies:
   http: ^0.13.4
   analog_clock: ^0.1.1
   syncfusion_flutter_datepicker: ^20.2.40
+  firebase_core: ^1.20.0
 
 msix_config:
   display_name: MedLook
