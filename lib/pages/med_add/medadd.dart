@@ -41,7 +41,8 @@ class _AddMedState extends State<AddMed> {
         medLoad = med;
       });
     } catch (Excepetion) {
-      print("No med found!");
+      //print("No med found!");
+      print(Excepetion);
     }
   }
 
@@ -116,12 +117,11 @@ class _AddMedState extends State<AddMed> {
 
   void submitedMed(String name) {
     if (nomeMed.text.isNotEmpty) {
-      Med med = Med();
-      med.nome = nomeMed.text.toTitleCase();
+      Med med = Med(nome: nomeMed.text.toTitleCase());
+      sharedPref.save("med", med.toJson());
       setState(() {
         String name = nomeMed.text.toTitleCase();
         print(name.toTitleCase());
-        sharedPref.save("med", med);
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => MedAdd2()));
       });
@@ -147,9 +147,9 @@ class _AddMedState extends State<AddMed> {
 
   void confirmar() {
     if (nomeMed.text.isNotEmpty) {
-      Med med = Med();
-      med.nome = nomeMed.text.toTitleCase();
-      sharedPref.save("med", med);
+      Med med = Med(nome: nomeMed.text.toTitleCase());
+      sharedPref.save("med", med.toJson());
+      loadSharedPrefs();
       setState(() {
         String name = nomeMed.text.toTitleCase();
         print(name.toTitleCase());

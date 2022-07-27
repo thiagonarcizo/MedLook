@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:med/extensions/stringext.dart';
 import 'package:med/models/med.dart';
 import 'package:med/pages/home.dart';
+import 'package:med/pages/med_add/medcalendar.dart';
 import 'package:med/repositories/data.dart';
 import 'package:med/repositories/meddata.dart';
 
@@ -122,7 +123,7 @@ class _AddMedState extends State<Clock2> {
                   fixedSize: Size(MediaQuery.of(context).size.width * 0.25,
                       MediaQuery.of(context).size.height * 0.07),
                 ),
-                child: const Text('Finalizar'),
+                child: const Text('Próximo'),
               ),
             ),
           ],
@@ -163,10 +164,9 @@ class _AddMedState extends State<Clock2> {
           posologia: medLoad.posologia,
           hora1: selectedTime.format(context),
           hora2: selectedTime2.format(context));
-      medsLoad.add(med);
-      sharedPrefMed.save(medsLoad);
+      sharedPref.save("med", med);
       Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => Home()));
+          .push(MaterialPageRoute(builder: (context) => MedCalendar()));
     });
   }
 }

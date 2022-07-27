@@ -260,6 +260,9 @@ class _SideMenuState extends State<SideMenu> {
     Widget continueButton = TextButton(
       child: const Text("Prosseguir", style: TextStyle(color: Colors.red)),
       onPressed: () {
+        SharedPref sharedPref = SharedPref();
+        sharedPref.remove('med');
+        sharedPref.remove('user');
         Navigator.pop(context);
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => const Welcome()));

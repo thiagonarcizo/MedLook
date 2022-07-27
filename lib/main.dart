@@ -10,12 +10,14 @@ import 'package:bitsdojo_window/bitsdojo_window.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     setWindowTitle('MedLook');
     setWindowMinSize(const Size(1000, 650));
     setWindowMaxSize(Size.infinite);
   }
-  final prefs = await SharedPreferences.getInstance();
+
   bool showWelcome = prefs.getBool('showWelcome') ?? false;
 
   runApp(MyApp(showWelcome: showWelcome));

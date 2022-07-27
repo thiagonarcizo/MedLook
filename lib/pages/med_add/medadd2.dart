@@ -22,8 +22,8 @@ class _AddMedState extends State<MedAdd2> {
 
   @override
   void initState() {
-    loadSharedPrefs();
     super.initState();
+    loadSharedPrefs();
   }
 
   SharedPref sharedPref = SharedPref();

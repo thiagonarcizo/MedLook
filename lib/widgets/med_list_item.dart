@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:med/models/med.dart';
+import 'package:intl/intl.dart';
 
 class MedListItem extends StatefulWidget {
   MedListItem({
@@ -100,11 +101,19 @@ class _MedListItemState extends State<MedListItem> {
             Text('Dosagem: ${widget.med.dosagem} ${widget.med.tipoDosagem}')
           else
             Text('Dosagem não informada'),
-          const SizedBox(height: 8),
+          const SizedBox(height: 12),
           Text(
               'Quantidade: ${widget.med.quantidade} ${widget.med.tipoQuantidade}'),
-          const SizedBox(height: 8),
-          Text('Horário(s): ${horarios.join(', ')}'),
+          const SizedBox(height: 12),
+          Text('Posologia: ${widget.med.posologia}x ao dia'),
+          const SizedBox(height: 12),
+          Text('Horário(s): ${horarios.join('; ')}'),
+          const SizedBox(height: 12),
+          if (widget.med.periodoNaoInformado == true)
+            Text(
+                'Período: de ${DateFormat('dd/MM/yyyy').format(widget.med.dataInicio!)} até ${DateFormat('dd/MM/yyyy').format(widget.med.dataFim!)}, totalizando ${widget.med.diasTratamento} dia(s) de tratamento')
+          else
+            Text('Período de tratamento não informado'),
         ],
       ),
       actions: <Widget>[

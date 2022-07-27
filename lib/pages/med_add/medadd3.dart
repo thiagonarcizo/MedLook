@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:med/extensions/stringext.dart';
@@ -62,7 +63,19 @@ class _AddMedState extends State<MedAdd3> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${medLoad.dosagem} ${medLoad.tipoDosagem}'),
+        title: AutoSizeText(
+          (() {
+            if (medLoad.dosagem != null) {
+              return "${medLoad.dosagem} ${medLoad.tipoDosagem} de ${medLoad.nome}";
+            }
+
+            return "Dosagem não informada";
+          })(),
+          maxFontSize: 56,
+          style: TextStyle(
+            fontSize: 20,
+          ),
+        ),
         flexibleSpace:
             Platform.isWindows || Platform.isLinux || Platform.isMacOS
                 ? Container(
