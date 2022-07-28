@@ -110,7 +110,7 @@ class _MedCalendar extends State<MedCalendar> {
           '${medLoad.quantidade} ${medLoad.tipoQuantidade} de ${medLoad.nome}',
           style: const TextStyle(
             color: Colors.white,
-            fontSize: 56,
+            fontSize: 36,
           ),
           maxLines: 1,
         ),
@@ -257,34 +257,44 @@ class _MedCalendar extends State<MedCalendar> {
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       title: const Text("Tem certeza?"),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-              'Revise as informações passadas sobre o medicamento ${medLoad.nome}:'),
-          SizedBox(height: 18),
-          if (medLoad.dosagem != null)
-            Text('Dosagem: ${medLoad.dosagem} ${medLoad.tipoDosagem}')
-          else
-            Text('Dosagem não informada'),
-          const SizedBox(height: 12),
-          Text('Quantidade: ${medLoad.quantidade} ${medLoad.tipoQuantidade}'),
-          const SizedBox(height: 12),
-          Text('Posologia: ${medLoad.posologia}x ao dia'),
-          const SizedBox(height: 12),
-          Text('Horário(s): ${horarios.join('; ')}'),
-          const SizedBox(height: 12),
-          if (medLoad.periodoNaoInformado == true)
-            Text(
-                'Período: de ${DateFormat('dd/MM/yyyy').format(medLoad.dataInicio!)} até ${DateFormat('dd/MM/yyyy').format(medLoad.dataFim!)}, totalizando ${medLoad.diasTratamento} dia(s) de tratamento')
-          else
-            Text('Período de tratamento não informado'),
-        ],
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            AutoSizeText(
+              'Revise as informações passadas sobre o medicamento ${medLoad.nome}:',
+              maxLines: 2,
+            ),
+            SizedBox(height: 18),
+            if (medLoad.dosagem != null)
+              Text('Dosagem: ${medLoad.dosagem} ${medLoad.tipoDosagem}')
+            else
+              Text('Dosagem não informada'),
+            const SizedBox(height: 12),
+            Text('Quantidade: ${medLoad.quantidade} ${medLoad.tipoQuantidade}'),
+            const SizedBox(height: 12),
+            Text('Posologia: ${medLoad.posologia}x ao dia'),
+            const SizedBox(height: 12),
+            Text('Horário(s): ${horarios.join('; ')}'),
+            const SizedBox(height: 12),
+            if (medLoad.periodoNaoInformado == true)
+              Text(
+                  'Período: de ${DateFormat('dd/MM/yyyy').format(medLoad.dataInicio!)} até ${DateFormat('dd/MM/yyyy').format(medLoad.dataFim!)}, totalizando ${medLoad.diasTratamento} dia(s) de tratamento')
+            else
+              Text('Período de tratamento não informado'),
+          ],
+        ),
       ),
       actions: [
-        cancelButton,
-        continueButton,
+        Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            cancelButton,
+            continueButton,
+          ],
+        ),
       ],
     );
     // show the dialog

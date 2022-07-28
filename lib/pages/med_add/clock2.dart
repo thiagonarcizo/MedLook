@@ -6,6 +6,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:med/extensions/stringext.dart';
+import 'package:med/extensions/timeofdayto24h.dart';
 import 'package:med/models/med.dart';
 import 'package:med/pages/med_add/medcalendar.dart';
 import 'package:med/repositories/data.dart';
@@ -99,7 +100,7 @@ class _AddMedState extends State<Clock2> {
                 child: AutoSizeText(
                   "Selecione pelo menos uma hora no dia em que deseja tomar o medicamento:",
                   style: TextStyle(fontSize: 48),
-                  maxLines: 1,
+                  maxLines: 3,
                 ),
               ),
             )),
@@ -122,14 +123,19 @@ class _AddMedState extends State<Clock2> {
             Center(
               child: Padding(
                 padding: const EdgeInsets.only(top: 100.0),
-                child: AutoSizeText(
-                  'Os horários para tormar o medicamento são:\n${TimeOfDayBuilder(horarios: [
-                        selectedTime,
-                        selectedTime2
-                      ]).timeSort(context).join('; ')}',
-                  style: TextStyle(fontSize: 36),
-                  maxFontSize: 36,
-                  maxLines: 3,
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: AutoSizeText(
+                      'Os horários para tormar o medicamento são:\n${TimeOfDayBuilder(horarios: [
+                            selectedTime,
+                            selectedTime2
+                          ]).timeSort(context).join('; ')}',
+                      style: TextStyle(fontSize: 36),
+                      maxFontSize: 36,
+                      maxLines: 3,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -181,8 +187,8 @@ class _AddMedState extends State<Clock2> {
           quantidade: medLoad.quantidade,
           tipoQuantidade: medLoad.tipoQuantidade,
           posologia: medLoad.posologia,
-          hora1: selectedTime.format(context),
-          hora2: selectedTime2.format(context));
+          hora1: selectedTime.to24h(context),
+          hora2: selectedTime2.to24h(context));
       sharedPref.save("med", med);
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => MedCalendar()));

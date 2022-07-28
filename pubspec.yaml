@@ -51,6 +51,8 @@ dependencies:
   analog_clock: ^0.1.1
   syncfusion_flutter_datepicker: ^20.2.40
   firebase_core: ^1.20.0
+  custom_pop_up_menu: ^1.2.4
+  flutter_local_notifications: ^9.7.0
 
 msix_config:
   display_name: MedLook
@@ -104,8 +106,9 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-assets:
-  - assets/images/
+  assets:
+  # assets/images/
+    - assets/launcher/medlogo_b.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

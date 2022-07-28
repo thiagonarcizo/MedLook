@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:med/extensions/timeofdayto24h.dart';
 
 class TimeOfDayBuilder {
   int? amount;
@@ -28,7 +29,7 @@ class TimeOfDayBuilder {
   List<String> timeSort(BuildContext context) {
     List<String> horariosFormat = [];
     for (TimeOfDay horas in this.horarios!) {
-      horariosFormat.add(horas.format(context));
+      horariosFormat.add(horas.to24h(context));
     }
     horariosFormat.sort();
     return horariosFormat;

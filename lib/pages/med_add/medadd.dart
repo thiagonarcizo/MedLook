@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:med/extensions/stringext.dart';
@@ -65,9 +66,13 @@ class _AddMedState extends State<AddMed> {
           shrinkWrap: true,
           children: [
             Center(
-              child: Text(
-                'Qual é o remédio?',
-                style: const TextStyle(fontSize: 36),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: AutoSizeText(
+                  'Qual é o medicamento?',
+                  style: const TextStyle(fontSize: 36),
+                  maxLines: 1,
+                ),
               ),
             ),
             SizedBox(height: 32),
@@ -89,11 +94,10 @@ class _AddMedState extends State<AddMed> {
                       width: 1,
                     ),
                   ),
-                  labelText: 'Nome do remédio',
+                  labelText: 'Nome do medicamento',
                 ),
                 controller: nomeMed,
                 onSubmitted: submitedMed,
-                maxLength: 25,
               ),
             ),
             const SizedBox(height: 16),

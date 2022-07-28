@@ -51,7 +51,7 @@ class Credits extends StatelessWidget {
                     const Padding(
                       padding: EdgeInsets.only(bottom: 16),
                       child: Text(
-                        'feito por thiago narcizo em flutter',
+                        'feito por thiago narcizo',
                         style: TextStyle(fontSize: 24),
                       ),
                     ),

@@ -6,6 +6,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:med/extensions/stringext.dart';
+import 'package:med/extensions/timeofdayto24h.dart';
 import 'package:med/models/med.dart';
 import 'package:med/pages/med_add/medcalendar.dart';
 import 'package:med/repositories/data.dart';
@@ -109,7 +110,7 @@ class _Clock6 extends State<Clock6> {
                 child: AutoSizeText(
                   "Selecione pelo menos uma hora no dia em que deseja tomar o medicamento:",
                   style: TextStyle(fontSize: 48),
-                  maxLines: 1,
+                  maxLines: 3,
                 ),
               ),
             )),
@@ -132,18 +133,23 @@ class _Clock6 extends State<Clock6> {
             Center(
               child: Padding(
                 padding: const EdgeInsets.only(top: 100.0),
-                child: AutoSizeText(
-                  'Os horários para tormar o medicamento são:\n${TimeOfDayBuilder(horarios: [
-                        selectedTime,
-                        selectedTime2,
-                        selectedTime3,
-                        selectedTime4,
-                        selectedTime5,
-                        selectedTime6,
-                      ]).timeSort(context).join('; ')}',
-                  style: TextStyle(fontSize: 36),
-                  maxFontSize: 36,
-                  maxLines: 3,
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: AutoSizeText(
+                      'Os horários para tormar o medicamento são:\n${TimeOfDayBuilder(horarios: [
+                            selectedTime,
+                            selectedTime2,
+                            selectedTime3,
+                            selectedTime4,
+                            selectedTime5,
+                            selectedTime6,
+                          ]).timeSort(context).join('; ')}',
+                      style: TextStyle(fontSize: 36),
+                      maxFontSize: 36,
+                      maxLines: 3,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -203,12 +209,12 @@ class _Clock6 extends State<Clock6> {
           quantidade: medLoad.quantidade,
           tipoQuantidade: medLoad.tipoQuantidade,
           posologia: medLoad.posologia,
-          hora1: selectedTime.format(context),
-          hora2: selectedTime2.format(context),
-          hora3: selectedTime3.format(context),
-          hora4: selectedTime4.format(context),
-          hora5: selectedTime5.format(context),
-          hora6: selectedTime6.format(context));
+          hora1: selectedTime.to24h(context),
+          hora2: selectedTime2.to24h(context),
+          hora3: selectedTime3.to24h(context),
+          hora4: selectedTime4.to24h(context),
+          hora5: selectedTime5.to24h(context),
+          hora6: selectedTime6.to24h(context));
       sharedPref.save("med", med);
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => MedCalendar()));

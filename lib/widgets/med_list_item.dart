@@ -1,5 +1,7 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:med/extensions/timeofdayto24h.dart';
 import 'package:med/models/med.dart';
 import 'package:intl/intl.dart';
 import 'package:med/models/todbuilder.dart';
@@ -40,14 +42,32 @@ class _MedListItemState extends State<MedListItem> {
   List<DateTime> horasParaDT() {
     //chamar essa função sempre que quiser a lista de horas em DT
     for (String horas in horarios) {
-      horasDT.add(
-          DateTime.parse('${DateFormat('yyyy-MM-dd').format(agora)} $horas'));
+      try {
+        horasDT.add(DateTime.parse(
+            '${DateFormat('yyyy-MM-dd').format(agora)} ${horas}'));
+      } catch (e) {
+        var df = DateFormat("h:mm a");
+        var dt = df.parse(horas);
+        horasDT.add(DateTime.parse(
+            '${DateFormat('yyyy-MM-dd').format(agora)} ${DateFormat('HH:mm').format(dt)}'));
+      }
     }
     horasDT.sort();
     return horasDT;
   }
 
   late TimeOfDay tempoFaltante = TimeOfDayBuilder().timeUntil(horasParaDT());
+
+  String tempoQueFalta(TimeOfDay hora) {
+    int hour = int.parse(hora.hour.toString().padLeft(2, '0'));
+    int minute = int.parse(hora.minute.toString().padLeft(2, '0'));
+    List<int> timeList = [hour, minute];
+    TimeOfDay horaTOD = TimeOfDay(hour: timeList[0], minute: timeList[1]);
+    String tempo = horaTOD.format(context);
+    var df = DateFormat("h:mm a");
+    var dt = df.parse(tempo);
+    return '${DateFormat('HH:mm').format(dt)}';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,17 +107,19 @@ class _MedListItemState extends State<MedListItem> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    'Próxima dose (desde que a aplicação foi aberta) em: ${tempoFaltante.format(context)}',
+                    //'Próxima dose (desde que a aplicação foi aberta) em: ${tempoFaltante.format(context)}',
+                    'Próxima dose (desde que a aplicação foi aberta) em: ${tempoFaltante.to24h(context)}',
                     style: const TextStyle(
                       fontSize: 12,
                     ),
                   ),
-                  Text(
+                  AutoSizeText(
                     widget.med.nome!,
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                     ),
+                    maxLines: 1,
                   ),
                 ],
               ),
@@ -111,28 +133,30 @@ class _MedListItemState extends State<MedListItem> {
   Widget _MedInfo(BuildContext context) {
     return new AlertDialog(
       title: Text('Informações do remédio ${widget.med.nome}'),
-      content: new Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          if (widget.med.dosagem != null)
-            Text('Dosagem: ${widget.med.dosagem} ${widget.med.tipoDosagem}')
-          else
-            Text('Dosagem não informada'),
-          const SizedBox(height: 12),
-          Text(
-              'Quantidade: ${widget.med.quantidade} ${widget.med.tipoQuantidade}'),
-          const SizedBox(height: 12),
-          Text('Posologia: ${widget.med.posologia}x ao dia'),
-          const SizedBox(height: 12),
-          Text('Horário(s): ${horarios.join('; ')}'),
-          const SizedBox(height: 12),
-          if (widget.med.diasTratamento != 0)
+      content: SingleChildScrollView(
+        child: new Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            if (widget.med.dosagem != null)
+              Text('Dosagem: ${widget.med.dosagem} ${widget.med.tipoDosagem}')
+            else
+              Text('Dosagem não informada'),
+            const SizedBox(height: 12),
             Text(
-                'Período: de ${DateFormat('dd/MM/yyyy').format(widget.med.dataInicio!)} até ${DateFormat('dd/MM/yyyy').format(widget.med.dataFim!)}, totalizando ${widget.med.diasTratamento} dia(s) de tratamento')
-          else
-            Text('Período de tratamento não informado'),
-        ],
+                'Quantidade: ${widget.med.quantidade} ${widget.med.tipoQuantidade}'),
+            const SizedBox(height: 12),
+            Text('Posologia: ${widget.med.posologia}x ao dia'),
+            const SizedBox(height: 12),
+            Text('Horário(s): ${horarios.join('; ')}'),
+            const SizedBox(height: 12),
+            if (widget.med.diasTratamento != 0)
+              Text(
+                  'Período: de ${DateFormat('dd/MM/yyyy').format(widget.med.dataInicio!)} até ${DateFormat('dd/MM/yyyy').format(widget.med.dataFim!)}, totalizando ${widget.med.diasTratamento} dia(s) de tratamento')
+            else
+              Text('Período de tratamento não informado'),
+          ],
+        ),
       ),
       actions: <Widget>[
         new TextButton(
