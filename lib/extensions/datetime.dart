@@ -18,6 +18,4 @@ extension DateTimeExtension on DateTime {
   DateTime clearTime() {
     return DateTime(this.year, this.month, this.day, 0, 0, 0, 0, 0);
   }
-
-  ///..... add more methods/properties for your convenience
 }
