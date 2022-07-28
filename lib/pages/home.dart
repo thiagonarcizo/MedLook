@@ -31,8 +31,10 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    NotificationApi.init(initScheduled: true);
-    listenNotifications();
+    if (Platform.isWindows == false) {
+      NotificationApi.init(initScheduled: true);
+      listenNotifications();
+    }
     loadSharedPrefsPerson();
     sharedPrefMed.read().then((value) {
       setState(() {

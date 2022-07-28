@@ -30,8 +30,10 @@ class _MedCalendar extends State<MedCalendar> {
   @override
   void initState() {
     super.initState();
-    NotificationApi.init(initScheduled: true);
-    listenNotifications();
+    if (Platform.isWindows == false) {
+      NotificationApi.init(initScheduled: true);
+      listenNotifications();
+    }
     loadSharedPrefs();
     sharedPrefMed.read().then((value) {
       setState(() {
@@ -44,8 +46,7 @@ class _MedCalendar extends State<MedCalendar> {
     NotificationApi.onNotifications.stream.listen(onClickedNotification);
   }
 
-  void onClickedNotification(String? payload) => Navigator.of(context)
-      .push(MaterialPageRoute(builder: (context) => Home()));
+  void onClickedNotification(String? payload) => print('Notificação clicada');
 
   late List<String?> horariosNull = [
     medLoad.hora1,
@@ -261,30 +262,38 @@ class _MedCalendar extends State<MedCalendar> {
 
       List<String> horarios = horariosNull.whereType<String>().toList()..sort();
 
-      for (int i = 0; i < horarios.length; i++) {
-        NotificationApi.showScheduledNotification(
-          title: 'Hora de ${med.nome}!',
-          body:
-              '${med.quantidade} ${med.tipoQuantidade} de ${med.nome} ${med.dosagem} ${med.tipoDosagem} esperando por você agora :)',
-          id: int.parse('${med.id}${horarios.indexOf(horarios[i])}'),
-          hour: int.parse(horarios[i].substring(0, 2)),
-          minute: int.parse(horarios[i].substring(3, 5)),
-        );
-        print(
-            'notificação #${horarios.indexOf(horarios[i])} agendada para o medicamento ${med.nome} - id: ${med.id}${horarios.indexOf(horarios[i])} - hora: ${int.parse(horarios[i].substring(0, 2))}:${int.parse(horarios[i].substring(3, 5))}');
-      }
-      print('fim das notificações agendadas do medicamento ${med.nome}');
+      if (Platform.isWindows == false) {
+        for (int i = 0; i < horarios.length; i++) {
+          NotificationApi.showScheduledNotification(
+            title: 'Hora de ${med.nome}!',
+            body:
+                '${med.quantidade} ${med.tipoQuantidade} de ${med.nome} esperando por você agora :)',
+            id: int.parse('${med.id}${horarios.indexOf(horarios[i])}'),
+            hour: int.parse(horarios[i].substring(0, 2)),
+            minute: int.parse(horarios[i].substring(3, 5)),
+          );
+          print(
+              'notificação #${horarios.indexOf(horarios[i])} agendada para o medicamento ${med.nome} - id: ${med.id}${horarios.indexOf(horarios[i])} - hora: ${int.parse(horarios[i].substring(0, 2))}:${int.parse(horarios[i].substring(3, 5))}');
+        }
+        print('fim das notificações agendadas do medicamento ${med.nome}');
 
-      sharedPref.remove('med');
-      medsLoad.add(med);
-      sharedPrefMed.save(medsLoad);
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => Home()));
+        sharedPref.remove('med');
+        medsLoad.add(med);
+        sharedPrefMed.save(medsLoad);
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => Home()));
+      } else {
+        print('Windows não suporta notificação por push');
+        sharedPref.remove('med');
+        medsLoad.add(med);
+        sharedPrefMed.save(medsLoad);
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => Home()));
+      }
     });
   }
 
   showAlertDialog(BuildContext context) {
-    // set up the buttons
     Widget cancelButton = TextButton(
       child: const Text("Cancelar"),
       onPressed: () {
@@ -302,34 +311,38 @@ class _MedCalendar extends State<MedCalendar> {
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       title: const Text("Tem certeza?"),
-      content: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          if (Platform.isWindows == false)
             AutoSizeText(
               'Revise as informações passadas sobre o medicamento ${medLoad.nome}:',
+              style: TextStyle(fontSize: 18),
               maxLines: 2,
+            )
+          else
+            Text(
+              'Revise as informações passadas sobre o medicamento ${medLoad.nome}:',
+              style: TextStyle(fontSize: 18),
             ),
-            SizedBox(height: 18),
-            if (medLoad.dosagem != null)
-              Text('Dosagem: ${medLoad.dosagem} ${medLoad.tipoDosagem}')
-            else
-              Text('Dosagem não informada'),
-            const SizedBox(height: 12),
-            Text('Quantidade: ${medLoad.quantidade} ${medLoad.tipoQuantidade}'),
-            const SizedBox(height: 12),
-            Text('Posologia: ${medLoad.posologia}x ao dia'),
-            const SizedBox(height: 12),
-            Text('Horário(s): ${horarios.join('; ')}'),
-            const SizedBox(height: 12),
-            if (medLoad.periodoNaoInformado == true)
-              Text(
-                  'Período: de ${DateFormat('dd/MM/yyyy').format(medLoad.dataInicio!)} até ${DateFormat('dd/MM/yyyy').format(medLoad.dataFim!)}, totalizando ${medLoad.diasTratamento} dia(s) de tratamento')
-            else
-              Text('Período de tratamento não informado'),
-          ],
-        ),
+          SizedBox(height: 18),
+          if (medLoad.dosagem != null)
+            Text('Dosagem: ${medLoad.dosagem} ${medLoad.tipoDosagem}')
+          else
+            Text('Dosagem não informada'),
+          const SizedBox(height: 12),
+          Text('Quantidade: ${medLoad.quantidade} ${medLoad.tipoQuantidade}'),
+          const SizedBox(height: 12),
+          Text('Posologia: ${medLoad.posologia}x ao dia'),
+          const SizedBox(height: 12),
+          Text('Horário(s): ${horarios.join('; ')}'),
+          const SizedBox(height: 12),
+          if (medLoad.periodoNaoInformado == true)
+            Text(
+                'Período: de ${DateFormat('dd/MM/yyyy').format(medLoad.dataInicio!)} até ${DateFormat('dd/MM/yyyy').format(medLoad.dataFim!)}, totalizando ${medLoad.diasTratamento} dia(s) de tratamento')
+          else
+            Text('Período de tratamento não informado'),
+        ],
       ),
       actions: [
         Row(
