@@ -32,7 +32,6 @@ class _MedCalendar extends State<MedCalendar> {
     super.initState();
     if (Platform.isWindows == false) {
       NotificationApi.init(initScheduled: true);
-      listenNotifications();
     }
     loadSharedPrefs();
     sharedPrefMed.read().then((value) {
