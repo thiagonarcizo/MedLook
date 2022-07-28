@@ -33,7 +33,6 @@ class _HomeState extends State<Home> {
     super.initState();
     if (Platform.isWindows == false) {
       NotificationApi.init(initScheduled: true);
-      listenNotifications();
     }
     loadSharedPrefsPerson();
     sharedPrefMed.read().then((value) {
@@ -176,16 +175,9 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.black,
         onPressed: () {
           setState(() {
-            int tamanho = medsLoad.length - 1;
-            if (tamanho < 0) {
-              int pos = 0;
-              Med medForNoti = Med(id: pos);
-              sharedPref.save('med', medForNoti);
-            } else {
-              int pos = tamanho;
-              Med medForNoti = Med(id: pos);
-              sharedPref.save('med', medForNoti);
-            }
+            int tamanho = medsLoad.length;
+            Med medForNoti = Med(id: tamanho);
+            sharedPref.save('med', medForNoti);
           });
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => AddMed()));
@@ -249,6 +241,8 @@ class _HomeState extends State<Home> {
       for (int i = 0; i < horarios.length; i++) {
         NotificationApi.cancel(
             int.parse('${deletedMedPos}${horarios.indexOf(horarios[i])}'));
+        print(
+            'notificação do medicamento ${med.nome} #${horarios.indexOf(horarios[i])} - id: ${deletedMedPos}${horarios.indexOf(horarios[i])} - cancelada');
       }
 
       medsLoad.remove(med);
@@ -262,15 +256,34 @@ class _HomeState extends State<Home> {
             style: const TextStyle(color: Colors.black)),
         backgroundColor: Colors.white,
         action: SnackBarAction(
-          label: 'Desfazer',
-          textColor: Colors.black,
-          onPressed: () {
-            setState(() {
-              medsLoad.insert(deletedMedPos!, deletedMed!);
-            });
-            sharedPrefMed.save(medsLoad);
-          },
-        ),
+            label: 'Desfazer',
+            textColor: Colors.black,
+            onPressed: () {
+              setState(
+                () {
+                  medsLoad.insert(deletedMedPos!, deletedMed!);
+
+                  if (Platform.isWindows == false) {
+                    for (int i = 0; i < horarios.length; i++) {
+                      NotificationApi.showScheduledNotification(
+                        title: 'Hora de ${med.nome}!',
+                        body:
+                            '${med.quantidade} ${med.tipoQuantidade} de ${med.nome} esperando por você agora :)',
+                        id: int.parse(
+                            '${med.id}${horarios.indexOf(horarios[i])}'),
+                        hour: int.parse(horarios[i].substring(0, 2)),
+                        minute: int.parse(horarios[i].substring(3, 5)),
+                      );
+                      print(
+                          'notificação #${horarios.indexOf(horarios[i])} agendada para o medicamento ${med.nome} - id: ${med.id}${horarios.indexOf(horarios[i])} - hora: ${int.parse(horarios[i].substring(0, 2))}:${int.parse(horarios[i].substring(3, 5))}');
+                    }
+                    print(
+                        'fim das notificações agendadas do medicamento ${med.nome}');
+                  }
+                  sharedPrefMed.save(medsLoad);
+                },
+              );
+            }),
         duration: const Duration(seconds: 5),
       ),
     );
