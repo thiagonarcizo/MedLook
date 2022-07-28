@@ -313,6 +313,7 @@ class _MedCalendar extends State<MedCalendar> {
       title: const Text("Tem certeza?"),
       content: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           if (Platform.isWindows == false)
             AutoSizeText(

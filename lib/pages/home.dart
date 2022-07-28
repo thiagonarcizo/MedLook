@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:med/models/med.dart';
 import 'package:med/models/meds.dart';
 import 'package:med/models/notification_api.dart';
+import 'package:med/pages/pdfview.dart';
 import 'package:med/pages/profile.dart';
 import 'package:med/pages/settings.dart';
 import 'package:med/pages/welcome.dart';
@@ -80,7 +81,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: upMenu(context),
+      appBar: upMenu(context, personLoad),
       drawer: SideMenu(),
       body: SingleChildScrollView(
         child: Column(
@@ -140,6 +141,7 @@ class _HomeState extends State<Home> {
             ListView(
               padding: EdgeInsets.zero,
               shrinkWrap: true,
+              physics: BouncingScrollPhysics(),
               children: [
                 Column(
                   mainAxisSize: MainAxisSize.min,
@@ -439,7 +441,7 @@ class _SideMenuState extends State<SideMenu> {
   }
 }
 
-AppBar upMenu(BuildContext context) {
+AppBar upMenu(BuildContext context, Person personLoad) {
   showAlertDialogMed(BuildContext context) {
     Widget cancelButton = TextButton(
       child: const Text("Cancelar"),
@@ -522,6 +524,9 @@ AppBar upMenu(BuildContext context) {
                     .push(MaterialPageRoute(builder: (context) => Settings()));
               } else if (value == 1) {
                 print("Gerar PDF dos medicamentos.");
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) =>
+                        PdfView(person: personLoad, meds: medsLoad)));
               } else if (value == 2) {
                 print("Apagar todos os medicamentos is selected.");
                 showAlertDialogMed(context);
