@@ -108,7 +108,7 @@ class _MedListItemState extends State<MedListItem> {
                 children: [
                   Text(
                     //'Próxima dose (desde que a aplicação foi aberta) em: ${tempoFaltante.format(context)}',
-                    'Próxima dose (desde que a aplicação foi aberta) em: ${tempoFaltante.to24h(context)}',
+                    'Próxima dose em: ${tempoFaltante.to24h(context)}',
                     style: const TextStyle(
                       fontSize: 12,
                     ),

@@ -8,6 +8,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:med/extensions/stringext.dart';
+import 'package:med/extensions/timeofdayto24h.dart';
 import 'package:med/models/med.dart';
 import 'package:med/pages/home.dart';
 import 'package:med/pages/med_add/medcalendar.dart';
@@ -150,7 +151,7 @@ class _AddMedState extends State<Clock1> {
           quantidade: medLoad.quantidade,
           tipoQuantidade: medLoad.tipoQuantidade,
           posologia: medLoad.posologia,
-          hora1: selectedTime.format(context));
+          hora1: selectedTime.to24h(context));
       sharedPref.save("med", med);
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => MedCalendar()));
