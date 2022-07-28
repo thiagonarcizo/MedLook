@@ -46,7 +46,8 @@ class _MedCalendar extends State<MedCalendar> {
     NotificationApi.onNotifications.stream.listen(onClickedNotification);
   }
 
-  void onClickedNotification(String? payload) => print('Notificação clicada');
+  void onClickedNotification(String? payload) =>
+      print('Notificação clicada: $payload');
 
   late List<String?> horariosNull = [
     medLoad.hora1,
