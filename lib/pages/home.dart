@@ -7,6 +7,7 @@ import 'package:med/models/med.dart';
 import 'package:med/models/meds.dart';
 import 'package:med/models/notification_api.dart';
 import 'package:med/pages/profile.dart';
+import 'package:med/pages/settings.dart';
 import 'package:med/pages/welcome.dart';
 import 'package:med/repositories/meddata.dart';
 import 'package:proste_bezier_curve/proste_bezier_curve.dart';
@@ -517,6 +518,8 @@ AppBar upMenu(BuildContext context) {
             }, onSelected: (value) {
               if (value == 0) {
                 print("Configurações is selected.");
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => Settings()));
               } else if (value == 1) {
                 print("Gerar PDF dos medicamentos.");
               } else if (value == 2) {

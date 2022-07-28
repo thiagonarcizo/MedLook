@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:med/models/notification_api.dart';
 import 'package:med/pages/home.dart';
 import 'package:med/pages/intro.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,6 +22,15 @@ void main() async {
   }
 
   bool showWelcome = prefs.getBool('showWelcome') ?? false;
+
+  bool dontAllowNoti = prefs.getBool('notiset') ?? true;
+
+  /*if (dontAllowNoti) {
+    NotificationApi.cancelAll();
+    print('Todas as notificações foram canceladas!');
+  } else {
+    print('Notificações estão ativadas!');
+  }*/
 
   /*await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
