@@ -21,6 +21,7 @@ class Med {
     this.dataFim,
     this.diasTratamento,
     this.periodoNaoInformado = true,
+    this.id,
   });
 
   String? nome;
@@ -41,6 +42,7 @@ class Med {
   DateTime? dataFim;
   int? diasTratamento;
   bool periodoNaoInformado;
+  int? id;
 
   late List<String?> horario;
 
@@ -62,7 +64,8 @@ class Med {
         dataInicio = DateTime.parse(json['dataInicio'] as String),
         dataFim = DateTime.parse(json['dataFim'] as String),
         diasTratamento = json['diasTratamento'] as int?,
-        periodoNaoInformado = json['periodoNaoInformado'] as bool;
+        periodoNaoInformado = json['periodoNaoInformado'] as bool,
+        id = json['id'] as int?;
 
   Map<String, dynamic> toJson() {
     return {
@@ -85,6 +88,7 @@ class Med {
       'dataFim': dataFim?.toIso8601String() ?? DateTime.now().toIso8601String(),
       'diasTratamento': diasTratamento ?? 0,
       'periodoNaoInformado': periodoNaoInformado,
+      'id': id,
     };
   }
 }

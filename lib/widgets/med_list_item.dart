@@ -7,14 +7,16 @@ import 'package:intl/intl.dart';
 import 'package:med/models/todbuilder.dart';
 
 class MedListItem extends StatefulWidget {
-  MedListItem({
-    Key? key,
-    required this.med,
-    required this.onDelete,
-  }) : super(key: key);
+  MedListItem(
+      {Key? key,
+      required this.med,
+      required this.onDelete,
+      required this.onNotification})
+      : super(key: key);
 
   final Med med;
   final Function(Med) onDelete;
+  final Function(Med) onNotification;
 
   @override
   State<MedListItem> createState() => _MedListItemState();

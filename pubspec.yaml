@@ -53,6 +53,9 @@ dependencies:
   firebase_core: ^1.20.0
   custom_pop_up_menu: ^1.2.4
   flutter_local_notifications: ^9.7.0
+  rxdart: ^0.27.5
+  timezone: ^0.8.0
+  flutter_native_timezone: ^2.0.0
 
 msix_config:
   display_name: MedLook

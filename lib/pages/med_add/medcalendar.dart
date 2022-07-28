@@ -5,6 +5,7 @@ import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:med/extensions/stringext.dart';
 import 'package:med/models/med.dart';
+import 'package:med/models/notification_api.dart';
 import 'package:med/pages/home.dart';
 import 'package:med/repositories/data.dart';
 import 'package:med/repositories/meddata.dart';
@@ -29,6 +30,8 @@ class _MedCalendar extends State<MedCalendar> {
   @override
   void initState() {
     super.initState();
+    NotificationApi.init(initScheduled: true);
+    listenNotifications();
     loadSharedPrefs();
     sharedPrefMed.read().then((value) {
       setState(() {
@@ -36,6 +39,13 @@ class _MedCalendar extends State<MedCalendar> {
       });
     });
   }
+
+  void listenNotifications() {
+    NotificationApi.onNotifications.stream.listen(onClickedNotification);
+  }
+
+  void onClickedNotification(String? payload) => Navigator.of(context)
+      .push(MaterialPageRoute(builder: (context) => Home()));
 
   late List<String?> horariosNull = [
     medLoad.hora1,
@@ -65,6 +75,10 @@ class _MedCalendar extends State<MedCalendar> {
 
   bool isChecked = false;
 
+  Med? notificationMed;
+
+  int? notificationMedPos;
+
   final TextEditingController nomeMed = TextEditingController();
 
   TimeOfDay selectedTime = TimeOfDay.now();
@@ -74,6 +88,7 @@ class _MedCalendar extends State<MedCalendar> {
       Med med = Med.fromJson(await sharedPref.read("med"));
       setState(() {
         medLoad = med;
+        print('ID do medicamento: ${medLoad.id}');
       });
     } catch (Excepetion) {
       print("No med found!");
@@ -212,24 +227,54 @@ class _MedCalendar extends State<MedCalendar> {
   void confirmar() {
     setState(() {
       Med med = Med(
-        nome: medLoad.nome!.toTitleCase(),
-        dosagem: medLoad.dosagem,
-        tipoDosagem: medLoad.tipoDosagem,
-        quantidade: medLoad.quantidade,
-        tipoQuantidade: medLoad.tipoQuantidade,
-        posologia: medLoad.posologia,
-        hora1: medLoad.hora1,
-        hora2: medLoad.hora2,
-        hora3: medLoad.hora3,
-        hora4: medLoad.hora4,
-        hora5: medLoad.hora5,
-        hora6: medLoad.hora6,
-        hora7: medLoad.hora7,
-        hora8: medLoad.hora8,
-        dataInicio: medLoad.dataInicio,
-        dataFim: medLoad.dataFim,
-        diasTratamento: medLoad.diasTratamento,
-      );
+          nome: medLoad.nome!.toTitleCase(),
+          dosagem: medLoad.dosagem,
+          tipoDosagem: medLoad.tipoDosagem,
+          quantidade: medLoad.quantidade,
+          tipoQuantidade: medLoad.tipoQuantidade,
+          posologia: medLoad.posologia,
+          hora1: medLoad.hora1,
+          hora2: medLoad.hora2,
+          hora3: medLoad.hora3,
+          hora4: medLoad.hora4,
+          hora5: medLoad.hora5,
+          hora6: medLoad.hora6,
+          hora7: medLoad.hora7,
+          hora8: medLoad.hora8,
+          dataInicio: medLoad.dataInicio,
+          dataFim: medLoad.dataFim,
+          diasTratamento: medLoad.diasTratamento,
+          id: medLoad.id);
+
+      notificationMed = med;
+
+      List<String?> horariosNull = [
+        med.hora1,
+        med.hora2,
+        med.hora3,
+        med.hora4,
+        med.hora5,
+        med.hora6,
+        med.hora7,
+        med.hora8,
+      ];
+
+      List<String> horarios = horariosNull.whereType<String>().toList()..sort();
+
+      for (int i = 0; i < horarios.length; i++) {
+        NotificationApi.showScheduledNotification(
+          title: 'Hora de ${med.nome}!',
+          body:
+              '${med.quantidade} ${med.tipoQuantidade} de ${med.nome} ${med.dosagem} ${med.tipoDosagem} esperando por você agora :)',
+          id: int.parse('${med.id}${horarios.indexOf(horarios[i])}'),
+          hour: int.parse(horarios[i].substring(0, 2)),
+          minute: int.parse(horarios[i].substring(3, 5)),
+        );
+        print(
+            'notificação #${horarios.indexOf(horarios[i])} agendada para o medicamento ${med.nome} - id: ${med.id}${horarios.indexOf(horarios[i])} - hora: ${int.parse(horarios[i].substring(0, 2))}:${int.parse(horarios[i].substring(3, 5))}');
+      }
+      print('fim das notificações agendadas do medicamento ${med.nome}');
+
       sharedPref.remove('med');
       medsLoad.add(med);
       sharedPrefMed.save(medsLoad);

@@ -40,6 +40,7 @@ class _AddMedState extends State<AddMed> {
       Med med = Med.fromJson(await sharedPref.read("med"));
       setState(() {
         medLoad = med;
+        print('ID do medicamento: ${medLoad.id}');
       });
     } catch (Excepetion) {
       print("No med found!");
@@ -120,7 +121,7 @@ class _AddMedState extends State<AddMed> {
 
   void submitedMed(String name) {
     if (nomeMed.text.isNotEmpty) {
-      Med med = Med(nome: nomeMed.text.toTitleCase());
+      Med med = Med(id: medLoad.id, nome: nomeMed.text.toTitleCase());
       sharedPref.save("med", med.toJson());
       setState(() {
         String name = nomeMed.text.toTitleCase();
@@ -150,7 +151,7 @@ class _AddMedState extends State<AddMed> {
 
   void confirmar() {
     if (nomeMed.text.isNotEmpty) {
-      Med med = Med(nome: nomeMed.text.toTitleCase());
+      Med med = Med(id: medLoad.id, nome: nomeMed.text.toTitleCase());
       sharedPref.save("med", med.toJson());
       loadSharedPrefs();
       setState(() {

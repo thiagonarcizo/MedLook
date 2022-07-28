@@ -5,6 +5,7 @@ import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:med/models/med.dart';
 import 'package:med/models/meds.dart';
+import 'package:med/models/notification_api.dart';
 import 'package:med/pages/profile.dart';
 import 'package:med/pages/welcome.dart';
 import 'package:med/repositories/meddata.dart';
@@ -30,6 +31,8 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+    NotificationApi.init(initScheduled: true);
+    listenNotifications();
     loadSharedPrefsPerson();
     sharedPrefMed.read().then((value) {
       setState(() {
@@ -37,6 +40,13 @@ class _HomeState extends State<Home> {
       });
     });
   }
+
+  void listenNotifications() {
+    NotificationApi.onNotifications.stream.listen(onClickedNotification);
+  }
+
+  void onClickedNotification(String? payload) => Navigator.of(context)
+      .push(MaterialPageRoute(builder: (context) => Home()));
 
   SharedPref sharedPref = SharedPref();
 
@@ -47,7 +57,12 @@ class _HomeState extends State<Home> {
   Person personLoad = Person();
 
   Med? deletedMed;
+
+  Med? notificationMed;
+
   int? deletedMedPos;
+
+  int? notificationMedPos;
 
   loadSharedPrefsPerson() async {
     try {
@@ -134,6 +149,7 @@ class _HomeState extends State<Home> {
                           child: MedListItem(
                             med: med,
                             onDelete: onDelete,
+                            onNotification: onNotification,
                           ),
                         )
                     else
@@ -157,6 +173,18 @@ class _HomeState extends State<Home> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.black,
         onPressed: () {
+          setState(() {
+            int tamanho = medsLoad.length - 1;
+            if (tamanho < 0) {
+              int pos = 0;
+              Med medForNoti = Med(id: pos);
+              sharedPref.save('med', medForNoti);
+            } else {
+              int pos = tamanho;
+              Med medForNoti = Med(id: pos);
+              sharedPref.save('med', medForNoti);
+            }
+          });
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => AddMed()));
         },
@@ -165,11 +193,62 @@ class _HomeState extends State<Home> {
     );
   }
 
+  void onNotification(Med med) {
+    notificationMed = med;
+    notificationMedPos = medsLoad.indexOf(med);
+
+    List<String?> horariosNull = [
+      med.hora1,
+      med.hora2,
+      med.hora3,
+      med.hora4,
+      med.hora5,
+      med.hora6,
+      med.hora7,
+      med.hora8,
+    ];
+
+    List<String> horarios = horariosNull.whereType<String>().toList()..sort();
+
+    setState(() {
+      for (int i = 0; i < horarios.length; i++) {
+        NotificationApi.showScheduledNotification(
+          title: 'Hora de ${med.nome}!',
+          body: 'O medicamento está esperando por você :)',
+          id: int.parse('${deletedMedPos}${horarios.indexOf(horarios[i])}'),
+          hour: int.parse(horarios[i].substring(0, 2)),
+          minute: int.parse(horarios[i].substring(3, 5)),
+        );
+        print(
+            'notificação #${horarios.indexOf(horarios[i])} agendada para o medicamento ${med.nome} - id: ${deletedMedPos}${horarios.indexOf(horarios[i])}');
+      }
+      print('fim das notificações agendadas do medicamento ${med.nome}');
+    });
+  }
+
   void onDelete(Med med) {
     deletedMed = med;
     deletedMedPos = medsLoad.indexOf(med);
 
+    List<String?> horariosNull = [
+      med.hora1,
+      med.hora2,
+      med.hora3,
+      med.hora4,
+      med.hora5,
+      med.hora6,
+      med.hora7,
+      med.hora8,
+    ];
+
+    List<String> horarios = horariosNull.whereType<String>().toList()..sort();
+
     setState(() {
+      for (int i = 0; i < horarios.length; i++) {
+        NotificationApi.cancel(
+            int.parse('${deletedMedPos}${horarios.indexOf(horarios[i])}'));
+      }
+
       medsLoad.remove(med);
     });
     sharedPrefMed.save(medsLoad);
@@ -355,6 +434,7 @@ AppBar upMenu(BuildContext context) {
     Widget continueButton = TextButton(
       child: const Text("Prosseguir", style: TextStyle(color: Colors.red)),
       onPressed: () {
+        NotificationApi.cancelAll();
         SharedPref sharedPref = SharedPref();
         SharedPrefMed sharedPrefMed = SharedPrefMed();
         sharedPref.remove('med');

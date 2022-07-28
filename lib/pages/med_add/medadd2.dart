@@ -43,6 +43,7 @@ class _AddMedState extends State<MedAdd2> {
       Med med = Med.fromJson(await sharedPref.read("med"));
       setState(() {
         medLoad = med;
+        print('ID do medicamento: ${medLoad.id}');
       });
     } catch (Excepetion) {
       print("No med found!");
@@ -229,6 +230,7 @@ class _AddMedState extends State<MedAdd2> {
       med.nome = medLoad.nome;
       med.dosagem = int.parse(nomeMed.text);
       med.tipoDosagem = dropDownValue;
+      med.id = medLoad.id;
       sharedPref.save("med", med);
       setState(() {
         String name = nomeMed.text.toTitleCase();
@@ -241,6 +243,7 @@ class _AddMedState extends State<MedAdd2> {
       med.nome = medLoad.nome;
       med.dosagem = null;
       med.tipoDosagem = null;
+      med.id = medLoad.id;
       sharedPref.save("med", med);
       setState(() {
         String name = nomeMed.text.toTitleCase();

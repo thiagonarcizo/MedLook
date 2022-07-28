@@ -187,8 +187,10 @@ class _AddMedState extends State<Clock2> {
           quantidade: medLoad.quantidade,
           tipoQuantidade: medLoad.tipoQuantidade,
           posologia: medLoad.posologia,
+          id: medLoad.id,
           hora1: selectedTime.to24h(context),
           hora2: selectedTime2.to24h(context));
+
       sharedPref.save("med", med);
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => MedCalendar()));
