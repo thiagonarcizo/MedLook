@@ -1,11 +1,9 @@
-import 'dart:convert';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:med/extensions/stringext.dart';
 import 'package:med/pages/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/person.dart';
-import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import '../repositories/data.dart';
 
@@ -85,7 +83,6 @@ class _WelcomeState extends State<Welcome> {
                       style: TextButton.styleFrom(
                         backgroundColor: Colors.white,
                         fixedSize: const Size(100, 50),
-                        primary: Colors.black,
                       ),
                       child: const Text('Confirma'),
                     ),

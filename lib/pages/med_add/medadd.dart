@@ -33,8 +33,6 @@ class _AddMedState extends State<AddMed> {
 
   final TextEditingController nomeMed = TextEditingController();
 
-  final TextEditingController _textFieldController = TextEditingController();
-
   loadSharedPrefs() async {
     try {
       Med med = Med.fromJson(await sharedPref.read("med"));

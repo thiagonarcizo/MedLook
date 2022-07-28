@@ -1,14 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:med/models/notification_api.dart';
+/*import 'package:med/models/notification_api.dart';*/
 import 'package:med/pages/home.dart';
 import 'package:med/pages/intro.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:window_size/window_size.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
+/*import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';*/
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,9 +23,9 @@ void main() async {
 
   bool showWelcome = prefs.getBool('showWelcome') ?? false;
 
-  bool dontAllowNoti = prefs.getBool('notiset') ?? true;
+  /*bool dontAllowNoti = prefs.getBool('notiset') ?? true;
 
-  /*if (dontAllowNoti) {
+  if (dontAllowNoti) {
     NotificationApi.cancelAll();
     print('Todas as notificações foram canceladas!');
   } else {

@@ -83,7 +83,7 @@ class NotificationApi {
         : scheduleDate;
   }
 
-  static tz.TZDateTime _scheduleMed(Time time) {
+  /*static tz.TZDateTime _scheduleMed(Time time) {
     final now = tz.TZDateTime.now(tz.local);
     final scheduleDate = tz.TZDateTime(tz.local, now.year, now.month, now.day,
         time.hour, time.minute, time.second);
@@ -99,7 +99,7 @@ class NotificationApi {
       scheduleDate = scheduleDate.add(Duration(days: 1));
     }
     return scheduleDate;
-  }
+  }*/
 
   static void cancel(int id) => _notifications.cancel(id);
   static void cancelAll() => _notifications.cancelAll();

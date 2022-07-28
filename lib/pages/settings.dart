@@ -2,10 +2,8 @@ import 'dart:io';
 
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
-import 'package:med/extensions/stringext.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/notification_api.dart';
-import '../models/person.dart';
 import '../repositories/data.dart';
 import 'home.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -27,8 +25,6 @@ class _SettingsState extends State<Settings> {
   SharedPref sharedPref = SharedPref();
 
   bool isChecked = false;
-
-  final TextEditingController _textFieldController = TextEditingController();
 
   loadSharedPrefs() async {
     try {

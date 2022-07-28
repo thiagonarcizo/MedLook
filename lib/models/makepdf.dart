@@ -1,8 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:med/models/med.dart';
 import 'package:med/models/person.dart';
-import 'package:med/repositories/data.dart';
-import 'package:med/repositories/meddata.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 import 'package:intl/intl.dart';

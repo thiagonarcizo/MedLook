@@ -34,8 +34,6 @@ class _AddMedState extends State<MedAdd2> {
 
   final TextEditingController nomeMed = TextEditingController();
 
-  final TextEditingController _textFieldController = TextEditingController();
-
   bool isChecked = false;
 
   loadSharedPrefs() async {

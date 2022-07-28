@@ -99,6 +99,7 @@ class _MedCalendar extends State<MedCalendar> {
   void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
     setState(() {
       if (args.value is PickerDateRange) {
+        // ignore: unused_local_variable
         String _range =
             '${DateFormat('dd/MM/yyyy').format(args.value.startDate)} -'
             ' ${DateFormat('dd/MM/yyyy').format(args.value.endDate ?? args.value.startDate)}';
@@ -108,12 +109,6 @@ class _MedCalendar extends State<MedCalendar> {
         medLoad.dataInicio = inicio;
         medLoad.dataFim = fim;
         medLoad.diasTratamento = dias;
-      } else if (args.value is DateTime) {
-        String _selectedDate = args.value.toString();
-      } else if (args.value is List<DateTime>) {
-        String _dateCount = args.value.length.toString();
-      } else {
-        String _rangeCount = args.value.length.toString();
       }
     });
   }

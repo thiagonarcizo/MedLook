@@ -5,7 +5,6 @@ import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:med/extensions/stringext.dart';
 import 'package:med/models/med.dart';
-import 'package:med/pages/home.dart';
 import 'package:med/pages/med_add/clock1.dart';
 import 'package:med/pages/med_add/clock2.dart';
 import 'package:med/pages/med_add/clock3.dart';
@@ -40,8 +39,6 @@ class _AddMedState extends State<MedAdd4> {
   Med medLoad = Med();
 
   final TextEditingController nomeMed = TextEditingController();
-
-  final TextEditingController _textFieldController = TextEditingController();
 
   loadSharedPrefs() async {
     try {

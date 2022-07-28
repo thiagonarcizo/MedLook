@@ -1,20 +1,15 @@
 //Carro-chefe do aplicativo: ideia da rodela de horário
 
 import 'dart:io';
-
-import 'dart:math' as math;
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:med/extensions/stringext.dart';
 import 'package:med/extensions/timeofdayto24h.dart';
 import 'package:med/models/med.dart';
-import 'package:med/pages/home.dart';
 import 'package:med/pages/med_add/medcalendar.dart';
 import 'package:med/repositories/data.dart';
 import 'package:med/repositories/meddata.dart';
-import 'package:analog_clock/analog_clock.dart';
 
 import '../../models/meds.dart';
 

@@ -3,7 +3,6 @@ import 'package:med/models/makepdf.dart';
 import 'package:med/models/makepdfpages.dart';
 import 'package:med/models/med.dart';
 import 'package:med/models/person.dart';
-import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
 
 class PdfView extends StatelessWidget {
