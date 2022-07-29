@@ -89,7 +89,7 @@ class MakePdf {
                           flex: 1,
                         ),
                         Expanded(
-                          child: med.periodoNaoInformado
+                          child: med.diasTratamento != 0
                               ? PaddedText(
                                   'Período: de ${DateFormat('dd/MM/yyyy').format(med.dataInicio!)} até ${DateFormat('dd/MM/yyyy').format(med.dataFim!)}, totalizando ${med.diasTratamento} dia(s) de tratamento')
                               : PaddedText(

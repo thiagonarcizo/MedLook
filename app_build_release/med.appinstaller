@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
   <AppInstaller xmlns="http://schemas.microsoft.com/appx/appinstaller/2021"
-    Uri="C:\Users\mack0\Documents\code\med\med\app_build_release/med.appinstaller" Version="1.0.0.3">
-    <MainPackage Name="xyz.narcizo.medlook" Version="1.0.0.3"
+    Uri="C:\Users\mack0\Documents\code\med\med\app_build_release/med.appinstaller" Version="0.0.0.1">
+    <MainPackage Name="xyz.narcizo.medlook" Version="0.0.0.1"
       Publisher="CN=Msix Testing, O=Msix Testing Corporation, S=Some-State, C=US"
-      Uri="C:\Users\mack0\Documents\code\med\med\app_build_release/versions/med_1.0.0.3.msix"
+      Uri="C:\Users\mack0\Documents\code\med\med\app_build_release/versions/med_0.0.0.1.msix"
       ProcessorArchitecture="x64" />
     <UpdateSettings>
       <OnLaunch HoursBetweenUpdateChecks="24" 

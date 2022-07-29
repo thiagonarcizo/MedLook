@@ -57,7 +57,7 @@ class MakePdfPages {
                     Text('- Posologia: ${med.posologia}x ao dia',
                         style: Theme.of(context).header1),
                     SizedBox(height: 16),
-                    med.periodoNaoInformado
+                    med.diasTratamento != 0
                         ? Text(
                             '- Período: de ${DateFormat('dd/MM/yyyy').format(med.dataInicio!)} até ${DateFormat('dd/MM/yyyy').format(med.dataFim!)},\ntotalizando ${med.diasTratamento} dia(s) de tratamento',
                             style: Theme.of(context).header1)
