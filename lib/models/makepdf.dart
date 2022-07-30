@@ -24,7 +24,7 @@ class MakePdf {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                        '${person.nome!}, ${person.idade!.toString()} anos | sexo ${person.sexo} | ${person.altura!.toString()} cm | ${person.peso!.toString()} kg',
+                        '${person.nome!}, ${person.idade!.toString()} anos | Sexo: ${person.sexo} | ${person.altura!.toString()} cm | ${person.peso!.toString()} kg',
                         style: TextStyle(
                             fontSize: 14, fontWeight: FontWeight.bold)),
                   ],
