@@ -409,6 +409,7 @@ class _SideMenuState extends State<SideMenu> {
       child: const Text("Prosseguir", style: TextStyle(color: Colors.red)),
       onPressed: () {
         SharedPref sharedPref = SharedPref();
+        NotificationApi.cancelAll();
         sharedPref.remove('med');
         sharedPref.remove('user');
         medsLoad.clear();

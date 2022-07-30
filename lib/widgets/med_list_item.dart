@@ -60,6 +60,16 @@ class _MedListItemState extends State<MedListItem> {
 
   late TimeOfDay tempoFaltante = TimeOfDayBuilder().timeUntil(horasParaDT());
 
+  String tempoFalta(TimeOfDay tempo) {
+    if (tempo.hour == 0 && tempo.minute == 0) {
+      return '00:00';
+    } else if (tempo.hour == 24 && tempo.minute == 0) {
+      return '24:00';
+    } else {
+      return '${tempoFaltante.to24h(context)}';
+    }
+  }
+
   String tempoQueFalta(TimeOfDay hora) {
     int hour = int.parse(hora.hour.toString().padLeft(2, '0'));
     int minute = int.parse(hora.minute.toString().padLeft(2, '0'));
@@ -76,9 +86,13 @@ class _MedListItemState extends State<MedListItem> {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 2, horizontal: 16),
       child: Slidable(
+        key: const ValueKey(Med),
         endActionPane: ActionPane(
           motion: const StretchMotion(),
           extentRatio: 0.2,
+          dismissible: DismissiblePane(onDismissed: () {
+            widget.onDelete(widget.med);
+          }),
           children: [
             SlidableAction(
               onPressed: (Med) {
@@ -110,7 +124,8 @@ class _MedListItemState extends State<MedListItem> {
                 children: [
                   Text(
                     //'Próxima dose (desde que a aplicação foi aberta) em: ${tempoFaltante.format(context)}',
-                    'Próxima dose em: ${tempoFaltante.to24h(context)}',
+                    //'Próxima dose em: ${tempoFaltante.to24h(context)}',
+                    'Próxima dose em: ${tempoFalta(tempoFaltante)}',
                     style: const TextStyle(
                       fontSize: 12,
                     ),
