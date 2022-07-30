@@ -99,7 +99,7 @@ class Credits extends StatelessWidget {
               const Expanded(
                 child: Align(
                   alignment: FractionalOffset.bottomCenter,
-                  child: Text('Versão: alpha 1.0.0 build 1'),
+                  child: Text('Versão: (alpha) 0.1.0 build 1'),
                 ),
               ),
               if (Platform.isWindows || Platform.isLinux || Platform.isMacOS)

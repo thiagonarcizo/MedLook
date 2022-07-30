@@ -16,20 +16,22 @@ import '../models/person.dart';
 import '../widgets/med_list_item.dart';
 import 'credits.dart';
 import 'med_add/medadd.dart';
+import 'package:background_fetch/background_fetch.dart';
 
 class Home extends StatefulWidget {
   Home({Key? key}) : super(key: key);
 
   @override
-  State<Home> createState() => _HomeState();
+  State<Home> createState() => HomeState();
 }
 
 List<Med> medsLoad = [];
 
-class _HomeState extends State<Home> {
+class HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+    initPlatformState();
     if (Platform.isWindows == false) {
       NotificationApi.init(initScheduled: true);
     }
@@ -73,6 +75,118 @@ class _HomeState extends State<Home> {
     } catch (Excepetion) {
       print("No person found!");
     }
+  }
+
+  void _onBackgroundFetch(String taskId) async {
+    if (taskId == 'xyz.narcizo.med') {
+      print('xyz.narcizo.med');
+      print('[BackgroundFetch] Headless event received.');
+      final now = DateTime.now();
+      if (medsLoad.isNotEmpty) {
+        for (Med med in medsLoad) {
+          List<String?> horariosNull = [
+            med.hora1,
+            med.hora2,
+            med.hora3,
+            med.hora4,
+            med.hora5,
+            med.hora6,
+            med.hora7,
+            med.hora8,
+          ];
+
+          List<String> horarios = horariosNull.whereType<String>().toList()
+            ..sort();
+          if (now.isAfter(med.dataFim!)) {
+            for (int i = 0; i < horarios.length; i++) {
+              NotificationApi.cancel(int.parse(
+                  '${medsLoad.indexOf(med)}${horarios.indexOf(horarios[i])}'));
+              print(
+                  'notificação do medicamento ${med.nome} #${horarios.indexOf(horarios[i])} - id: ${medsLoad.indexOf(med)}${horarios.indexOf(horarios[i])} - cancelada');
+            }
+            medsLoad.remove(med);
+            SharedPrefMed().save(medsLoad);
+          }
+        }
+      } else {
+        NotificationApi.cancelAll();
+        print(
+            '\nNão há o que fazer em BG, pois não há medicamentos,\nmas todas as notificações foram canceladas por garantia.\n');
+      }
+    }
+  }
+
+  static void backgroundFetchHeadlessTask(HeadlessTask task) async {
+    var taskId = task.taskId;
+    if (taskId == 'xyz.narcizo.med') {
+      print('xyz.narcizo.med');
+      print('[BackgroundFetch] Headless event received.');
+      final now = DateTime.now();
+      if (medsLoad.isNotEmpty) {
+        for (Med med in medsLoad) {
+          List<String?> horariosNull = [
+            med.hora1,
+            med.hora2,
+            med.hora3,
+            med.hora4,
+            med.hora5,
+            med.hora6,
+            med.hora7,
+            med.hora8,
+          ];
+
+          List<String> horarios = horariosNull.whereType<String>().toList()
+            ..sort();
+          if (now.isAfter(med.dataFim!)) {
+            for (int i = 0; i < horarios.length; i++) {
+              NotificationApi.cancel(int.parse(
+                  '${medsLoad.indexOf(med)}${horarios.indexOf(horarios[i])}'));
+              print(
+                  'notificação do medicamento ${med.nome} #${horarios.indexOf(horarios[i])} - id: ${medsLoad.indexOf(med)}${horarios.indexOf(horarios[i])} - cancelada');
+            }
+            medsLoad.remove(med);
+            SharedPrefMed().save(medsLoad);
+          }
+        }
+      } else {
+        NotificationApi.cancelAll();
+        print(
+            '\nNão há o que fazer em BG, pois não há medicamentos,\nmas todas as notificações foram canceladas por garantia.\n');
+      }
+    }
+  }
+
+  void _onBackgroundFetchTimeout(String taskId) {
+    print('[BackgroundFetch] TIMEOUT: $taskId');
+    BackgroundFetch.finish(taskId);
+  }
+
+  Future<void> initPlatformState() async {
+// Configure BackgroundFetch.
+    var status = await BackgroundFetch.configure(
+        BackgroundFetchConfig(
+          minimumFetchInterval: 15,
+          forceAlarmManager: false,
+          stopOnTerminate: false,
+          startOnBoot: true,
+          enableHeadless: true,
+          requiresBatteryNotLow: false,
+          requiresCharging: false,
+          requiresStorageNotLow: false,
+          requiresDeviceIdle: false,
+          requiredNetworkType: NetworkType.NONE,
+        ),
+        _onBackgroundFetch,
+        _onBackgroundFetchTimeout);
+    print('[BackgroundFetch] configure success: $status');
+// Schedule backgroundfetch for the 1st time it will execute with 1000ms delay.
+// where device must be powered (and delay will be throttled by the OS).
+    BackgroundFetch.scheduleTask(TaskConfig(
+        taskId: 'xyz.narcizo.med',
+        delay: 1000,
+        periodic: false,
+        stopOnTerminate: false,
+        enableHeadless: true));
   }
 
   @override

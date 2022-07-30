@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@capacitor/cli": "^4.0.1",
+    "@capacitor/core": "^4.0.1",
+    "@transistorsoft/capacitor-background-fetch": "^1.0.0"
+  }
+}

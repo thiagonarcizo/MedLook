@@ -105,9 +105,11 @@ class _MedCalendar extends State<MedCalendar> {
             ' ${DateFormat('dd/MM/yyyy').format(args.value.endDate ?? args.value.startDate)}';
         DateTime inicio = args.value.startDate;
         DateTime fim = args.value.endDate ?? args.value.startDate;
-        int dias = fim.difference(inicio).inDays + 1;
+        DateTime fimTrue =
+            fim.add(Duration(hours: 23, minutes: 59, seconds: 59));
+        int dias = fim.difference(inicio).inDays;
         medLoad.dataInicio = inicio;
-        medLoad.dataFim = fim;
+        medLoad.dataFim = fimTrue;
         medLoad.diasTratamento = dias;
       }
     });

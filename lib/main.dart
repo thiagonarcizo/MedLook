@@ -7,6 +7,7 @@ import 'package:med/pages/intro.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:window_size/window_size.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
+import 'package:background_fetch/background_fetch.dart';
 /*import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';*/
 
@@ -37,6 +38,8 @@ void main() async {
   );*/
 
   runApp(MyApp(showWelcome: showWelcome));
+
+  BackgroundFetch.registerHeadlessTask(HomeState.backgroundFetchHeadlessTask);
 
   doWhenWindowReady(() {
     appWindow.alignment = Alignment.center;
